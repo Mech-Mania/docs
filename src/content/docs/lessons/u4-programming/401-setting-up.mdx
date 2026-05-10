@@ -11,21 +11,26 @@ import { Steps, Card } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 import { Image } from 'astro:assets';
+
 import img_arduino_ide_linux from '../../../../assets/lessons/u1-intro/101-01-arduino-ide-linux.png';
 import img_arduino_ide_windows from '../../../../assets/lessons/u1-intro/101-02-arduino-ide-windows.png';
+import img_empty_arduino_ide from '../../../../assets/lessons/u1-intro/101-03-empty-arduino-ide.png';
 
-To code the microcontrollers used in Mechmania, namely the [Arduino](https://www.arduino.cc/) and the [Esp32](https://www.espressif.com/en/products/socs/esp32), we recommend that you use the Arduino IDE or the Arduino CLI (the latter of which is more versatile, and can be used with VSCode, but has a more involved setup).
+import img_board_selector from '../../../../assets/lessons/u1-intro/101-04-board-selector.png';
 
-If you are new to programming or are unfamiliar with the use of terminal commands, we recommend you follow this guide from here to setup the Arduino IDE, otherwise you can skip to [here](http://localhost:4321/lessons/u4-programming/401-setting-up/#arduino-cli-setup) for use of the Arduino CLI
+:::caution
+    To follow this lesson, you need a personal Linux or Windows computer. You will not be able to install the Arduino IDE on a school-managed Chromebooks. Instead, you should see the [Arduino Cloud editor](https://app.arduino.cc) to code in the browser.
+:::
 
-#### Arduino IDE Setup
+To code the microcontrollers used in Mechmania, namely the [Arduino](https://www.arduino.cc/) and the [Esp32](https://www.espressif.com/en/products/socs/esp32), we recommend that you use the Arduino IDE.
+
+## Arduino IDE Setup
 
 First, download the correct Arduino IDE executable for your operating system from the [official site](https://www.arduino.cc/en/software/)
 
 <Tabs>
     <TabItem label="Linux">
         <Image src={img_arduino_ide_linux} width={600} alt="Download Arduino IDE for Linux" />
-        
         You should be able to find the downloaded IDE inside of your `/home/<user>/Downloads/` folder. Rename it to `arduinoIDE.AppImage`.
 
         Open a terminal instance to the Downloads folder, make the IDE executable, then run it.
@@ -41,7 +46,6 @@ First, download the correct Arduino IDE executable for your operating system fro
         ./arduinoIDE.AppImage
         ```
         You should be able to also run it by double clicking on the icon in the file browser or desktop
-
     </TabItem>
     <TabItem label="Windows">
         <Image src={img_arduino_ide_windows} width={600} alt="Download Arduino IDE for Windows" />
@@ -49,8 +53,15 @@ First, download the correct Arduino IDE executable for your operating system fro
         Find the downloaded installer inside yof your `C:\Users\<user>\Downloads\` directory. Open the installer and then follow the install steps. The default install options should be perfect unless you have any special circumstances, such as needing to install on a different disk than `C:/`.
 
         You should be able to launch the IDE by searching up `Arduino` inside the Start Menu and clicking `Open`.
-
     </TabItem>
 </Tabs>
 
-#### Arduino CLI Setup
+The Arduino IDE should now be up and running, however there are still a few things that need to be set up. Your screen should look like this:
+    
+<Image src={img_empty_arduino_ide} alt="Empty arduino IDE screen" /> 
+
+To install the toolchain for a board, click on the "Select Board" button at the top left of the screen. For our purposes, we will be installing the toolchain for the Arduino Uno rev3.
+
+In the search box, search for Arduino Uno. The default is the rev3, however for other boards, such as the ESP32, which has a lot of different models, you may need to be more specific. Once selected, click `Ok`. The IDE should install the toolchain for the board onto your system.
+
+<Image src={img_board_selector} alt="Empty arduino IDE screen" />
