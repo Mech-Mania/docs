@@ -1,0 +1,61 @@
+---
+title: Version Control With GitHub
+description: How to  set up a Git/Github workflow
+author: Camleaf
+last-editor: Camleaf
+created-on: 26/05/10
+last-edited: 26/05/10
+---
+
+import { Steps, Card } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+import { Image } from 'astro:assets';
+
+import img_git_win_installer from '../../../assets/guides/version-control-with-github/01-git-win-download.png';
+
+Version control is extremely important for storing CAD files and software files, and is essential when working on a shared project with other people. The most popular version control system is [Git](https://git-scm.com/), an open-source project, which is often paired using GitHub, developed by Microsoft, as a remote host.
+
+## Installing Git
+
+Firstly, we need to check if we have Git installed on our system.
+
+<Tabs>
+    <TabItem label="Linux">
+        Open the terminal with `Ctrl-Alt-t`, then run 
+        ```bash 
+        git -v
+        
+        # output should be something like:
+        git version x.xx.x
+        ```
+        
+        If the output is not what is specified above, install Git with one of the following commands then follow the instructions.
+        ```bash
+        
+        # Ubuntu/Debian
+        sudo apt-get install git
+
+        # Fedora
+        sudo dnf install git
+        ```
+    
+        Now, you should be able to use Git from any terminal session on your computer.
+    </TabItem>
+    <TabItem label="Windows">
+        :::tip
+            If using the [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) (WSL), switch back to the `Linux` tab.
+        :::
+
+        Search in your start menu for `Git Bash`. If it does not show up, then go to the official site for Git, [git-scm.com](https://git-scm.com/install/windows), and download the standalone installer `Git for Windows/x64 Setup`.
+
+        <Image src={img_git_win_installer} width={400} alt="Download for Git Windows installer" />
+
+        Launch the installer by double-clicking on it, then agree to the GNU [General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html),and use all the default settings on the installer. 
+        
+        You should be now able to launch Git Bash by searching from the Start Menu on your PC, or from right-click in the file browser, and this is where you will use the Git CLI.
+    </TabItem>
+</Tabs>
+
+
+Now that we have Git installed,
