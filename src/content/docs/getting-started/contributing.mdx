@@ -64,15 +64,17 @@ More examples:
 The format for guide names is `kebab-case-name`.
 </Card>
 <Card title="Images">
-Image files should be named with the format `XX-kebab-case-name`, where the two first characters and the unique (within a lesson/guide) ID of the image.
+Image files should be named with the format `XX-kebab-case-name`, and the unique (within a lesson/guide) ID of the image.
 
 Image files should be stored within the `src/assets/` directory of the site.
 If a lesson or guide contains an image, that image should be stored within the `src/assets` directory, in the same subfolder as their corresponding lesson is to the `src/content/docs/` folder.
 
-For example, if there were 2 images in a lesson at `src/assets/content/docs/lessons/101-kebab-eating.mdx`, some image files could be:
+For lesson images, put the 3 digits of the lesson numberin the title. For guides, simply put them into a subfolder with the name of the guide underneath the `src/assets/guides/` folder.
+
+For example, if there were 2 images in a lesson at `src/assets/content/docs/lessons/u1-intro/101-kebab-eating.mdx`, some image files could be:
 ```
-src/assets/lessons/101-kebab-eating/01-grill-photo.png
-src/assets/lessons/101-kebab-eating/02-propane-tank.png
+src/assets/lessons/u1-intro/101-01-grill-photo.png
+src/assets/lessons/u1-intro/101-02-propane-tank.png
 ```
 </Card>
 
