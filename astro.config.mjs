@@ -11,7 +11,6 @@ export default defineConfig({
               { icon: 'github', label: 'GitHub', href: 'https://github.com/Mech-Mania/learn' }
           ],
           customCss: [
-              // Path to your Tailwind base styles:
               './src/styles/global.css',
           ],
           sidebar: [
@@ -20,7 +19,7 @@ export default defineConfig({
                   autogenerate: {directory: "getting-started"}
               },
               {
-                  label: 'lessons',
+                  label: 'Lessons',
                   items: [
                       {
                           label: "U1 intro",
