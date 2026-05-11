@@ -13,6 +13,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import { Image } from 'astro:assets';
 
 import img_git_win_installer from '../../../assets/guides/version-control-with-github/01-git-win-download.png';
+import img_find_github_profile from '../../../assets/guides/version-control-with-github/02-find-github-profile.png';
+import img_create_repo from '../../../assets/guides/version-control-with-github/03-create-repo.png';
 
 Version control is extremely important for storing CAD files and software files, and is essential when working on a shared project with other people. The most popular version control system is [Git](https://git-scm.com/), an open-source project, which is often paired using GitHub, developed by Microsoft, as a remote host.
 
@@ -20,7 +22,7 @@ Version control is extremely important for storing CAD files and software files,
 
 Firstly, we need to check if we have Git installed on our system.
 
-<Tabs>
+<Tabs syncKey="OSes">
     <TabItem label="Linux">
         Open the terminal with `Ctrl-Alt-t`, then run 
         ```bash 
@@ -54,8 +56,67 @@ Firstly, we need to check if we have Git installed on our system.
         Launch the installer by double-clicking on it, then agree to the GNU [General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html),and use all the default settings on the installer. 
         
         You should be now able to launch Git Bash by searching from the Start Menu on your PC, or from right-click in the file browser, and this is where you will use the Git CLI.
+
+        :::tip
+            Windows generally uses backslashes (`\`) to divide files and folders in its paths, but Git Bash uses forward slashes, (`/`), to emulate Linux.
+        :::
     </TabItem>
 </Tabs>
 
+## Setting up GitHub
 
-Now that we have Git installed,
+If you don't already have a Github account, create one at [github.com](https://github.com/). Use your personal email to create this account, NOT a school or organization one.
+
+Click on your profile icon in the top right, then click `profile`
+
+<Image src={img_find_github_profile} width={400} alt="Get to profile" />
+
+Once inside your personal page, click `New Repository`. Then enter a name for the repo, and click `Create Repository`
+
+<Image src={img_create_repo} width={600} alt="Create Repo" />
+
+## Using Git
+
+<Tabs syncKey="OSes">
+    <TabItem label="Linux" >
+        
+        To start, open your projects folder. If you do not have one, it is generally good practice to put it in `/home/<user>/Documents/projects`.
+        Open the terminal, then navigate to the project folder
+        ```bash
+            mkdir /home/<user>/Documents/projects # if you do not yet have a projects folder
+            cd /home/<user>/Documents/projects # navigate to the projects folder
+        ``` 
+
+    </TabItem>  
+    <TabItem label="Windows">
+        To start, open your projects folder. If you do not have one, it is generally good practice to put it in `C:\Users\<user>\Documents`.
+        Open Git Bash, then navigate to the project folder
+        ```bash
+            mkdir C:/Users/<user>/Documents/projects # if you do not yet have a projects folder
+            cd C:/Users/<user>/Documents/projects # navigate to the projects folder
+        ``` 
+    </TabItem>
+</Tabs>
+
+From there, clone the repository
+
+```bash
+git clone https://github.com/<your-username>/hello-repo.git
+
+# this will create a subfolder within your projects folder, so you can navigate as such
+cd ./hello-repo
+```
+
+### Committing
+
+#### `.gitignore`
+
+### Pulls and Pushes
+
+### Github Issues and Pull Requests
+
+#### Merge Conflicts
+
+
+
+
