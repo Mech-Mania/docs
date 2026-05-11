@@ -77,7 +77,14 @@ Once inside your personal page, click `New Repository`. Then enter a name for th
 
 ## Linking Git to Github
 
-still gotta write this
+In the settings menu of your GitHub account, go to `Developer Settings->Personal Access Tokens->Tokens(classic)`.
+
+<Tabs syncKey="OSes">
+    <TabItem label="Linux" >
+    </TabItem>  
+    <TabItem label="Windows">
+    </TabItem>
+</Tabs>
 
 
 ## Using Git
@@ -118,14 +125,28 @@ cd ./hello-repo
 
 #### `.gitignore`
 
-### Pulls and Pushes
+### Remote Origin
 
-All of the commits you have done so far have been on your local copy of the repository. You can sync your branch by _pushing_ to the repo.
+All of the commits you have done so far have been on your local copy of the repository. You can sync the latest Git details (such as latest commit onthe remote repo) as such:
 ```bash
-    git push
+    git fetch origin
 ```
 
+You can update your local copy with the latest changes by _pulling_ from the repo
+```
+    # `origin` refers to the remote repo hosted by GitHub
+    # `main` refers to the fact that the main branch on your local repo is set up to track the main branch on the remote repo.
+    git pull origin/main
+```
+
+You can update the remote host with your changes by _pushing_ to the repo.
+```bash
+    git push origin/main
+```
+
+Before pushing or pulling you must always fetch from origin
 #### Merge Conflicts
 
+### Branches
 
 ### Github Issues and Pull Requests
