@@ -15,6 +15,8 @@ import { Image } from 'astro:assets';
 import img_git_win_installer from '../../../assets/guides/version-control-with-github/01-git-win-download.png';
 import img_find_github_profile from '../../../assets/guides/version-control-with-github/02-find-github-profile.png';
 import img_create_repo from '../../../assets/guides/version-control-with-github/03-create-repo.png';
+import img_PAT_create from '../../../assets/guides/version-control-with-github/04-PAT-create.png';
+import img_PAT_mode_select from '../../../assets/guides/version-control-with-github/05-PAT-mode-select.png';
 
 Version control is extremely important for storing CAD files and software files, and is essential when working on a shared project with other people. The most popular version control system is [Git](https://git-scm.com/), an open-source project, which is often paired using GitHub, developed by Microsoft, as a remote host.
 
@@ -75,9 +77,21 @@ Once inside your personal page, click `New Repository`. Then enter a name for th
 
 <Image src={img_create_repo} width={600} alt="Create Repo" />
 
-## Linking Git to Github
+## Linking Git to GitHub
+
+:::tip
+    If you have already used Microsoft's GitHub extension for VSCode before, Git should already be linked, so you may be able to skip this section.
+:::
 
 In the settings menu of your GitHub account, go to `Developer Settings->Personal Access Tokens->Tokens(classic)`.
+
+You should see an option to generate a new token.
+
+<Image src={img_PAT_create} width={600} alt="Create Repo" />
+
+Click on it and select `Generate New Token (classic)`
+
+<Image src={img_PAT_mode_select} width={400} alt="Create Repo" />
 
 <Tabs syncKey="OSes">
     <TabItem label="Linux" >
@@ -86,6 +100,7 @@ In the settings menu of your GitHub account, go to `Developer Settings->Personal
     </TabItem>
 </Tabs>
 
+You will be prompted for a password, 
 
 ## Using Git
 
@@ -127,7 +142,7 @@ cd ./hello-repo
 
 ### Remote Origin
 
-All of the commits you have done so far have been on your local copy of the repository. You can sync the latest Git details (such as latest commit onthe remote repo) as such:
+All of the commits you have done so far have been on your local copy of the repository. You can fetch the latest Git details (such as latest commit on the remote repo) as such:
 ```bash
     git fetch origin
 ```
@@ -145,6 +160,7 @@ You can update the remote host with your changes by _pushing_ to the repo.
 ```
 
 Before pushing or pulling you must always fetch from origin
+
 #### Merge Conflicts
 
 ### Branches
