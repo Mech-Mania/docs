@@ -17,6 +17,7 @@ import img_find_github_profile from '../../../assets/guides/version-control-with
 import img_create_repo from '../../../assets/guides/version-control-with-github/03-create-repo.png';
 import img_PAT_create from '../../../assets/guides/version-control-with-github/04-PAT-create.png';
 import img_PAT_mode_select from '../../../assets/guides/version-control-with-github/05-PAT-mode-select.png';
+import img_PAT_create_permissions from '../../../assets/guides/version-control-with-github/06-PAT-create-permissions.png';
 
 Version control is extremely important for storing CAD files and software files, and is essential when working on a shared project with other people. The most popular version control system is [Git](https://git-scm.com/), an open-source project, which is often paired using GitHub, developed by Microsoft, as a remote host.
 
@@ -87,20 +88,49 @@ In the settings menu of your GitHub account, go to `Developer Settings->Personal
 
 You should see an option to generate a new token.
 
-<Image src={img_PAT_create} width={600} alt="Create Repo" />
+<Image src={img_PAT_create} width={600} alt="Generate PAT" />
 
 Click on it and select `Generate New Token (classic)`
 
-<Image src={img_PAT_mode_select} width={400} alt="Create Repo" />
+<Image src={img_PAT_mode_select} width={400} alt="Classic mode token gen" />
 
+You will be prompted for a password, and then will see this screen: 
+
+<Image src={img_PAT_create_permissions} width={600} alt="Set Permissions for PAT" />
+
+:::danger
+    DO NOT SHARE YOUR PERSONAL ACCESS TOKEN WITH ANYBODY. This can be used to get access to your GitHub account.
+:::
+
+Generally, it is best to select only the scopes, or permissions, that you need and _are going to use_ when generating your Personal Access Token (PAT). However, that is beyond the scope of this guide, so for now select all of the scopes (you can change this later), or read about scopes more [here](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes).
+
+Once you have selected your scopes, scroll down to the bottom and click `Generate Token`. Once it is generated, copy it, because it will only be shown to you once.
+
+
+To safely load our credentials, we use the [Github Credential Manager](https://github.com/git-ecosystem/git-credential-manager) (or [this link](https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git) for Github's guide to the GCM).
 <Tabs syncKey="OSes">
-    <TabItem label="Linux" >
+    <TabItem label="Linux">
+        To install the GCM on linux, we can use the script provided by the [GCM repo](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md). You will prompted for your password.
+        ```bash
+        curl -L https://aka.ms/gcm/linux-install-source.sh | sh
+        git-credential-manager configure
+        ```
+        
+        The GCM by default doesn't save our credentials to disk, so to store them securely (encrypted), we can set the store to use GPG encryption.
+        ```bash
+        git config --global credential.credentialStore gpg
+        ```
+
+        ```
     </TabItem>  
     <TabItem label="Windows">
+        On Windows, the GCM comes bundled with Git Bash, which we installed earlier. It will be preconfigured to use the Windows Credential Manager. Should you have a need to reset it to this default, you can do as such:
+        ```bash
+        git-credential-manager --global credential.credentialStore wincredman
+        ```
     </TabItem>
 </Tabs>
 
-You will be prompted for a password, 
 
 ## Using Git
 
