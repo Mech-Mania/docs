@@ -295,26 +295,48 @@ For our purposes, we can create branches in two ways: using the GitHub remote re
         git fetch origin
         git checkout new-branch
         ```
+        
+        Similarily, after a branch is deleted on GitHub, you can delete it locally do as such:
+        ```bash
+        git fetch origin --prune # prune fixes the remote pointers stored in git locally
+        git branch -D new-branch
+        ```
     </TabItem>  
     <TabItem label="Command Line">
         To create and switch to a new branch from the terminal, we can use Git's `branch` and `checkout` commands.
         ```bash
-            # replace `new-branch` with the name of your branch
-            git branch new-branch
-            git checkout new-branch
+        # replace `new-branch` with the name of your branch
+        git branch new-branch
+        git checkout new-branch
         ```
-        
         This branch currently only exists on our machine, which can sometimes be useful. To publish it to the remote repo, we can push to origin with the `-u` flag to set upstream data. Be careful to not overwrite a branch tracked with the same name on the remote repo.
         ```bash
-            git push -u origin new-branch
+        git push -u origin new-branch
+        git fetch origin # To get new remote status
         ```
-        
+        Similarily, to delete a branch on the local repo and remote repo, you can do as such:
+        ```bash
+        git push -u origin --delete new-branch # delete on remote
+        git fetch origin --prune # delete remote pointer locally
+        git branch -D new-branch # delete local branch
+        ```
     </TabItem>
 </Tabs>
 
 #### Merging Branches
 
+Having different branches isn't much use if they stay separate forever. To solve this issue, we can merge branches together.
 
+For example, if we want to merge a branch `new-branch` into the branch `main`, we would do as such:
+```bash
+# switch to main branch
+git checkout main
+
+# merge new-branch into main
+git merge new-branch
+```
+
+While this merges the changes from `new-branch` into `main`, `new-branch` still exists. There can often be use in leaving the branch alive, however for our purposes we can go ahead and delete this.
 
 #### Merge Conflicts
 
@@ -330,7 +352,7 @@ This code is from
 The branch recieving the merge
 =======
 The branch being merged
->>>>>>> branch-a
+>>>>>>> new-branch
 ```
 
 Delete the conflict markers and make the changes you want in the final merge. Once this is done for all files, stage your changes and create a commit to resolve the merge conflicts.
