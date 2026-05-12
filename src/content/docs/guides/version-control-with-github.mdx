@@ -110,7 +110,7 @@ Once you have selected your scopes, scroll down to the bottom and click `Generat
 To safely load our credentials, we use the [Github Credential Manager](https://github.com/git-ecosystem/git-credential-manager) (or [this link](https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git) for Github's guide to the GCM).
 <Tabs syncKey="OSes">
     <TabItem label="Linux">
-        To install the GCM on linux, we can use the script provided by the [GCM repo](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md). You will prompted for your password.
+        To install the GCM on Linux, we can use the script provided by the [GCM repo](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md). You will prompted for your password.
         ```bash
         curl -L https://aka.ms/gcm/linux-install-source.sh | sh
         git-credential-manager configure
@@ -194,8 +194,20 @@ cd ./hello-repo
 Committing in Git is the act of saving a snapshot of the changes of a project since the previous save.
 
 ```bash
-git commit -C "comment"
+# this will stage all changes into the commit, which may not always be wanted
+git commit -a
 ```
+
+Upon entering this command, Git will enter your terminal session into a text editor such as `nano` or `vi`.
+It will prompt you to enter in a commit message, after which you need to exit the text editor and save the buffer.
+
+Some common methods of saving exiting the text editors are:
+
+|||
+|-|-|
+| Nano | type `Ctrl-x` then `Y` |
+| Vi | type `:w` then `:qa` |
+| Notepad | Save then exit in top right |
 
 #### Staging
 
@@ -225,12 +237,6 @@ git restore /path/to/file.py
 git restore .
 ```
 
-
-Alternatively, you can stage all and commit in one, which is often the fastest method, however there are often cases where it is better to take the long route.
-```bash
-git commit -a
-```
-
 #### `.gitignore`
 
 ### Remote Origin
@@ -241,7 +247,7 @@ All of the commits you have done so far have been on your local copy of the repo
 ```
 
 You can update your local copy with the latest changes by _pulling_ from the repo
-```
+```bash
     # `origin` refers to the remote repo hosted by GitHub
     # `main` refers to the fact that the main branch on your local repo is set up to track the main branch on the remote repo.
     git pull origin/main
@@ -257,5 +263,14 @@ Before pushing or pulling you must always fetch from origin
 #### Merge Conflicts
 
 ### Branches
+
+According to the Git website, [branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) is the act of diverging from the main line of development to continue to do work without messing with the main line.
+
+In practice, this means that a branch is effectively a copy of a snapshot of another branch at a specific point in time, on which you can commit, push, pull, and do all of the regular Git operations on.
+
+#### Creating Branches
+
+
+
 
 ### Github Issues and Pull Requests
