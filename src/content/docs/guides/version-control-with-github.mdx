@@ -120,7 +120,30 @@ To safely load our credentials, we use the [Github Credential Manager](https://g
         ```bash
         git config --global credential.credentialStore gpg
         ```
+        Using GPG as the store, however, requires some additional setup. We need to use the `pass` utility, which in turns requires a GPG keypair.
+        ```bash
+            # generate GPG keypair
+            gpg --gen-key
+        ```
+        Follow the prompts, and make sure to remember the password you set. The final ouput should be something like this:
+        ```
+        public and secret key created and signed.
 
+        pub ed25519 yyyy-mm-dd
+            <GPG-ID>
+        uid         Your-name <Your Email>
+        sub cv25519 yyy-mm-dd
+        ```
+        Then, generate your stored passkey using the GPG-ID outputted.
+        ```bash
+            pass init <GPG-ID> 
+            # you will be prompted for your password.
+        ```
+        By default, the GCM with GPG only caches your credentials for a period of 10 minutes, so increase this to 2 hours, find or create the file `~/.gnupg/gpg-agent.conf` and add:
+        ```
+        default-cache-ttl 7200
+        max-cache-ttl 7200 
+        allow-loopback-pinentry
         ```
     </TabItem>  
     <TabItem label="Windows">
@@ -130,6 +153,8 @@ To safely load our credentials, we use the [Github Credential Manager](https://g
         ```
     </TabItem>
 </Tabs>
+
+Now that the GCM is configured, the next time you do a Git action that requires authentication, such as pushing to a repo on GitHub, you will be prompted for your PAT and accompanying password. The credentials will be stored, and the only thing you will have to do is periodically re-enter your password.
 
 
 ## Using Git
@@ -166,7 +191,45 @@ cd ./hello-repo
 
 ### Committing
 
+Committing in Git is the act of saving a snapshot of the changes of a project since the previous save.
 
+```bash
+git commit -C "comment"
+```
+
+#### Staging
+
+Comitting, however, does nothing on its own. First, you need to _stage_ files.
+
+You can think of your GitHub repo as three distinct areas. First you have your working directory, where the moment-to-moment changes you make live. Next is the staging area, where you can pick and choose files to prepare for commit. Finally, we have the repo itself, which keeps tracks of commits, which are bundles of staged changes.
+
+To stage files, you can use the git's `add` command.
+```bash
+
+git add /path/to/file.py
+
+# or to add all unstaged files
+git add .
+```
+
+You can see the current staging status of your project as such:
+```bash
+git status
+```
+
+To restore a file to the state of the last commit, you can use the `restore` command.
+```bash
+git restore /path/to/file.py
+
+# to restore all files
+git restore .
+```
+
+
+Alternatively, you can stage all and commit in one, which is often the fastest method, however there are often cases where it is better to take the long route.
+```bash
+git commit -a
+```
 
 #### `.gitignore`
 
