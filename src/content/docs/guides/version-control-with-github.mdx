@@ -239,6 +239,16 @@ git restore .
 
 #### `.gitignore`
 
+If you want to never track or commit a file, keeping it out of a repo, create a file called `.gitignore` in the top-level directory of your project. On each new line, enter the file pattern which you do not want to track. For example, if you didn't want to commit build files in `build/`, or didn't want to commit your `.env` file, or didn't want any json file:
+
+`.gitignore`
+```
+build/
+.env
+*.json
+```
+
+
 ### Remote Origin
 
 All of the commits you have done so far have been on your local copy of the repository. You can fetch the latest Git details (such as latest commit on the remote repo) as such:
