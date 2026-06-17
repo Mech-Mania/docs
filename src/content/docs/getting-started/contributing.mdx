@@ -49,15 +49,16 @@ When modifying existing files, remember to update the last-edited sections.
 
 #### File Naming
 <Card title="Lessons">
-The format for naming lessons is `XXX-kebab-case-name.mdx`, where the the first 3 characters represent the number ID of the lesson, and the rest is in kebab-case.
+The format for naming lessons is `XX-kebab-case-name.mdx`, where the the first two characters represent the number ID of the lesson, and the rest is in kebab-case.
 
-For example, should you have a lesson named `1.15 - Example lesson`, then the final name would be `115-example-lesson.mdx`
+For example, should you have a lesson named `1.15 - Example lesson`, then the final name would be `15-example-lesson.mdx`. The unit the lesson belongs to would be signified by the folder it is in.
 
 More examples:
 ```
-"1.2 - Kebab Roasting" -> "102-kebab-roasting.mdx"
-"4.9 - Burger Flipping" -> "409-burger-flipping.mdx"
-"2.22 - Factual Statements" -> "222-factual-statements.mdx"
+"1.2 - Kebab Roasting" -> "02-kebab-roasting.mdx"
+"4.9 - Burger Flipping" -> "09-burger-flipping.mdx"
+"2.22 - Factual Statements" -> "22-factual-statements.mdx"
+
 ```
 </Card>
 <Card title="Guides">
@@ -69,12 +70,12 @@ Image files should be named with the format `XX-kebab-case-name`, and the unique
 Image files should be stored within the `src/assets/` directory of the site.
 If a lesson or guide contains an image, that image should be stored within the `src/assets` directory, in the same subfolder as their corresponding lesson is to the `src/content/docs/` folder.
 
-For lesson images, put the 3 digits of the lesson numberin the title. For guides, simply put them into a subfolder with the name of the guide underneath the `src/assets/guides/` folder.
+For lesson images, put the 2 digits of the lesson number in the title. For guides, simply put them into a subfolder with the name of the guide underneath the `src/assets/guides/` folder.
 
 For example, if there were 2 images in a lesson at `src/assets/content/docs/lessons/u1-intro/101-kebab-eating.mdx`, some image files could be:
 ```
-src/assets/lessons/u1-intro/101-01-grill-photo.png
-src/assets/lessons/u1-intro/101-02-propane-tank.png
+src/assets/lessons/u1-intro/01-01-grill-photo.png
+src/assets/lessons/u1-intro/01-02-propane-tank.png
 ```
 </Card>
 
