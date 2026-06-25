@@ -16,28 +16,28 @@ export default defineConfig({
           sidebar: [
               {
                   label: 'Getting Started',
-                  autogenerate: {directory: "getting-started"}
+                  items: [{autogenerate: {directory: "getting-started"}}]
               },
               {
                   label: 'Lessons',
                   items: [
                       {
-                          label: "U1 design",
-                          autogenerate: {directory: "lessons/u1-design"},
+                          label: "U1 design", 
+                          items: [{autogenerate: {directory: "lessons/u1-design"}}],
                       },
                       {
                           label: "U2 electrical",
-                          autogenerate: {directory: "lessons/u2-electrical"},
+                          items: [{autogenerate: {directory: "lessons/u2-electrical"}}],
                       },
                       {
                           label: "U3 programming",
-                          autogenerate: {directory: "lessons/u3-programming"},
+                          items: [{autogenerate: {directory: "lessons/u3-programming"}}],
                       },
                   ]
               },
               {
                   label: 'Guides',
-                  autogenerate: {directory: "guides"}
+                  items:[{autogenerate: {directory: "guides"}}]
               },
 
 
