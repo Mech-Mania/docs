@@ -7,6 +7,8 @@ created-on: 26/06/25
 last-edited: 26/06/25
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 :::caution
     It is recommended that you have read [2.6 Microcontrollers](/lessons/u2-electrical/26-microcontrollers/) before starting this lesson.
 :::
@@ -54,7 +56,7 @@ void loop(){
     delay(500); // Delays the mainloop by 500ms
 }
 ```
-We start Serial by using the `Serial.begin(int baud);` command. The baud rate is the speed of data transmission between two devices, in this case the MCU and the computer, and must match for effective data transmission. In the case of the program above, we use the standard value of `9600`.
+We start Serial by using the `Serial.begin(baud);` command. The baud rate is the speed of data transmission between two devices, in this case the MCU and the computer, and must match for effective data transmission. In the case of the program above, we use the standard value of `9600`.
 
 To write data to serial, we can use the two functions `Serial.print();` amd `Serial.println();` shown above, as well as numerous others, which you can learn more about [here](https://docs.arduino.cc/language-reference/en/functions/communication/serial/). The list of functions should be at the bottom of the page.
 
@@ -70,9 +72,9 @@ Be sure to set the baud rate to 9600, so that the messages get through.
 
 ### Input/Output
 
-To control and communicate with circuits, we use the GPIO (general purpose input/ouput) pins on the MCU. With them, we can read and write signals.
+To control and communicate with circuits, as opposed to the computer, we use the GPIO (general purpose input/ouput) pins on the MCU. With them, we can read and write signals.
 
-By default, pins are setup as input. We can configure this in the setup function with the `pinMode(int pin, int pinMode)`
+By default, pins are setup as input. We can configure this in the setup function with the `pinMode(pin, pinMode)`
 
 ```c++
 
@@ -86,13 +88,130 @@ void setup(){
 
 ```
 
-
+There does exist a third mode `INPUT_PULLUP`, which defaults a pin to have a HIGH input reading instead of LOW when no circuit is connected to it.
 
 #### Digital
+
+Digital reads and writes have exactly two modes for both input and output: HIGH (operating voltage of the MCU),  with a value of 1, or LOW (ground), with a value of 0.
+
+For example, consider the Blink program from [Lesson 3.2](/lessons/u3-programming/02-uploading-code);
+
+```c++
+
+#define LED 13
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(LED, HIGH);  // change state of the LED by setting the pin to the HIGH voltage level
+  delay(1000);
+  digitalWrite(LED, LOW);   // change state of the LED by setting the pin to the LOW voltage level
+  delay(1000); 
+}
+```
+
+Here, we used digitalWrite to output a HIGH (usually 5V or 3.3V) signal to pin 13, which is connected to an LED.
+
+
+Now consider a circuit with a switch, where the input is connected to logic output (usually 5V or 3.3V, and output to pin 10. To detect if the switch was flipped, we would use the `digitalRead(pin)` function.
+
+```c++
+#define SWITCH 10
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(SWITCH, INPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+    if (digitalRead(SWITCH)){ // Returns 1 on input detection, 0 otherwise
+        Serial.println("Switch on!");
+    } else {
+        Serial.println("Switch off...")
+    }
+    
+    delay(250);
+}
+
+```
 
 
 #### Analog
 
+Voltages do not just exist as a flat on/off, and we can use the range in between to transmit values as well. Using Analog-supported pins on a microcontroller, we can read the voltage level as an integer from 0 (0V) to 1023 (Logic level of the MCU).
 
+Take this example where we can read the rotation of a potentiometer based on it's signal output. We use the `analogRead(pin)` function to achieve the functionality above.
+
+```c++
+
+#define POT 10
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(POT, INPUT);
+}
+
+void loop() {
+    // Will read 0-1023 based on rotation of potentiometer
+    Serial.println(analogRead(POT));   
+
+    delay(250);
+}
+
+```
 
 ### PWM
+
+The Arduino and ESP32 do not natively contain methods of outputting raw analog signals, so instead they use PWM, or Pulse Width Modulation.
+
+PWM works by switching the power supply to a component on and off extremely quickly. This can be used to provide an equal effect as if we were providing a constant raw analog signal. 
+
+The most common measurement used to describe PWM signals is the *duty cycle*, which is the percentage of time that a signal is HIGH over any given period.
+
+![Duty Cycle](../../../../assets/lessons/u3-programming/04-03-duty-cycle.jpg)
+
+#### Outputting PWM
+
+<Tabs syncKey="Boards">
+    <TabItem label="Arduino">
+        On an Arduino board, we use the `analogWrite(pin, value)` function to output PWM signals.The function accepts a range of value from 0-255, where the duty cycle is `input / 255 * 100%`. The only setup required is setting the pin to output. 
+
+        For example, building on the earlier example with the potentiometer, we could map the value recieved to the correct range and output a PWM signal to control the brightness of an LED.     
+        ```c++
+            #define POT_PIN 10
+            #define LED_PIN 11
+    
+            void setup() {
+                pinMode(POT_PIN, INPUT);
+                pinMode(LED_PIN, OUTPUT);
+            }
+
+            const int pot;
+            const int led;
+
+            void loop() {
+                // Will read 0-1023 based on rotation of potentiometer
+                pot = analogRead(POT_PIN);
+                
+
+                // linearly maps the potentiometer from a 0-1023 range to 0-255.
+                led = map(pot,0,1023,0,255);
+
+                // Write mapped value to LED
+                analogWrite(
+                    LED_PIN,
+                    led
+                );
+
+                delay(250);
+            }
+        ```
+    </TabItem>
+    <TabItem label="ESP32">
+    </TabItem>
+</Tabs>
+
