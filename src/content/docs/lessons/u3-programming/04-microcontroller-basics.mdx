@@ -212,6 +212,43 @@ The most common measurement used to describe PWM signals is the *duty cycle*, wh
         ```
     </TabItem>
     <TabItem label="ESP32">
+        To generate a PWM signal with an ESP32, we use the LEDC module to drive PWM outputs.
+
+        To use LEDC, we first need to set it up for an individual pin. We can do this with `ledcAttach(pin, frequency, resolution)`. We can then 
+        ```c++
+            #define POT_PIN 10
+            #define LED_PIN 11
+
+
+            #define PWM_FREQ 5000    // On/Off switches/second
+            #define PWM_RESOLUTION 8 // Bits used to represent duty cycle
+    
+            void setup() {
+                pinMode(POT_PIN, INPUT);
+                pinMode(LED_PIN, OUTPUT);
+                ledcAttach(LED_PIN, PWM_FREQ, PWM_RESOLUTION);
+            }
+
+            const int pot;
+            const int led;
+
+            void loop() {
+                // Will read 0-1023 based on rotation of potentiometer
+                pot = analogRead(POT_PIN);
+                
+
+                // linearly maps the potentiometer from a 0-1023 range to 0-255.
+                led = map(pot,0,1023,0,255);
+
+                // Write mapped value to LED
+                ledcWrite(LED_PIN, led);
+                
+                delay(250);
+            }
+        ```
+        PWM frequency represents the number of times an on/off cycle will repeat per second. A higher value is smoother, but may wear out components faster, a low value may result in audible noise or slow response.
+
+        PWM resolution is the amount of bits the LEDC module will use for the duty cycle. So, in general, the accepted range when using `ledcWrite(pin, duty)` would be `0 -> (resolution**2)-1`.
     </TabItem>
 </Tabs>
 
