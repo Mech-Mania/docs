@@ -98,6 +98,62 @@ Consequently, when both `M1` pins are depowered, no motion occurs, and when both
         While we can use LEDC to drive the motors, this does have a limit: Standard ESP32s have 16 channels, and newer models have just 8. At 2 channels per motor, if we were to create a full four-motor drivebase on a robot, we would be using either half or all of our available channels simply for driving our robot, leaving very few for servos or motors required for mechanisms.
 
         Thankfully, ESP32s have a separate built-in utility called [MCPWM](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/mcpwm.html), a dedicated hardware PWM unit for all types of motors, DC, BLDC, servo, and stepper alike. Most of the ESP32 units contain 2 MCPWM units, each with 3 PWM pairs (6 channels), totalling an additional 12 PWM channels, all dedicated to motor function.
+        ![MCPWM Units](../../../../assets/lessons/u3-programming/05-02-mcpwm-unit.png)
+        
+        If we consider the above diagram, we can follow that to individually drive a single pwm lane, for example pwm0a, then we need to index the unit, operator, and lane, as well as assigning a timer (for our purposes driving brushed DC motors, we can assign every motor the same timer).
+        
+        It is worth mentioning that while multiple timers can be used across PWM output pairs, each individual pair should have a single timer, or else both motor driver inputs may be on at the same time, and short the mosfet.
+        ```c++  
 
+        #define JOYSTICK_RESOLUTION 9
+
+        void setMotor(mcpwm_unit_t unit, float val){
+            float duty = abs(val) * 100.0f / 255.0f;
+            duty = constrain(duty,0.0f,100.0f);
+
+            if (val > 0) {
+                mcpwm_set_duty(unit, MCPWM_TIMER_0, MCPWM_GEN_A, duty);
+                mcpwm_set_duty_type(unit, MCPWM_TIMER_0, MCPWM_GEN_A, MCPWM_DUTY_MODE_0);
+
+                mcpwm_set_signal_low(unit, MCPWM_TIMER_0, MCPWM_GEN_B); // Ensure other pin is OFF
+            } else if (val < 0) {
+                mcpwm_set_signal_low(unit, MCPWM_TIMER_0, MCPWM_GEN_A);
+
+                mcpwm_set_duty(unit, MCPWM_TIMER_0, MCPWM_GEN_B, duty);
+                mcpwm_set_duty_type(unit, MCPWM_GEN_B, MCPWM_DUTY_MODE_0);
+            } else {
+                mcpwm_set_signal_low(unit, MCPWM_TIMER_0, MCPWM_GEN_A);
+                mcpwm_set_signal_low(unit, MCPWM_TIMER_0, MCPWM_GEN_B);
+            }
+         }
+         void setupMCPWM(uint8_t kbr1, uint8_t kbr2, uint8_t kbl1, uint8_t kbl2, uint8_t kfr1, uint8_t kfr2, uint8_t kfl1, uint8_t kfl2){
+                //Init gpios for mcpwm
+                // front left
+                mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, kfl1);
+                mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0B, kfl2);
+                // front right
+                mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1A, kfr1);
+                mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1B, kfr2);
+                //back left
+                mcpwm_gpio_init(MCPWM_UNIT_1, MCPWM0A, kbl1);
+                mcpwm_gpio_init(MCPWM_UNIT_1, MCPWM0B, kbl2);
+                //back right
+                mcpwm_gpio_init(MCPWM_UNIT_1, MCPWM1A, kbr1);
+                mcpwm_gpio_init(MCPWM_UNIT_1, MCPWM1B, kbr2);
+
+                mcpwm_config_t pwm_conf;
+                pwm_conf.frequency = 5000;        
+                pwm_conf.cmpr_a = 0;          
+                pwm_conf.cmpr_b = 0;          
+                pwm_conf.counter_mode = MCPWM_UP_COUNTER;
+                pwm_conf.duty_mode = MCPWM_DUTY_MODE_0;
+                
+                // Init mcpwm 
+                mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_conf);
+                mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_1, &pwm_conf);
+                mcpwm_init(MCPWM_UNIT_1, MCPWM_TIMER_0, &pwm_conf);
+                mcpwm_init(MCPWM_UNIT_1, MCPWM_TIMER_1, &pwm_conf);
+            }
+        ```
     </TabItem>
 </Tabs>
