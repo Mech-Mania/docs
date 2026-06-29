@@ -7,10 +7,14 @@ created-on: 26/06/28
 last-edited: 26/06/28
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+:::caution
+    Build systems such as Make or CMake will not work out of the box with Arduino, since it acts as its own (highly abstracted) build system, and you will likely be unable to use libraries not explicitly ported to Arduino.
+:::
 
 
+As with any programming discipline, chances are that when we run into a difficult but common problem, somebody else has already solved it, and often in a better way than we could think of. Much of these solutions have been packaged into easy-to-use containers called libraries.
 
+Libraries are collections of code written for a specific purpose, usually to provide some layer of  abstraction. Use of these libraries makes our code significantly easier to read.
 
 
 For the purpose of this lesson, we will be using the [Servo](https://docs.arduino.cc/libraries/servo/) library, which allows generated data to be persistently stored on our Arduino or ESP32.
