@@ -35,6 +35,59 @@ Consequently, when both `M1` pins are depowered, no motion occurs, and when both
 
 <Tabs syncKey="Boards">
     <TabItem label="Arduino">
+        On Arduino, we use `analogWrite(pin,val)` to generate the required PWM signals.
+        For example, if we wanted to drive a motor directly based upon the output of a joystick, we can implement the logic above as such:
+        ```c++ wrap
+        
+        #define M1A 11
+        #define M1B 12
+
+        #define JOYSTICK_Y_PIN 13
+
+        #define DEADZONE 40
+
+        void setMotor(uint8_t m1a, uint8_t m1b, float val){
+            
+            // If the given speed > 0, then m1a triggers, if it speed < 0, then m1b triggers. 
+            // Neither will trigger at the same time.
+            if (val > 0) {
+                analogWrite(m1a, val);
+                ledcWrite(m1b, 0);
+            } else if (val < 0) {
+                analogWrite(m1a, 0); 
+                analogWrite(m1b, val);
+            } else {
+                analogWrite(m1a, 0); 
+                analogWrite(m1b, 0);
+            }
+        }
+
+
+        void setup(){
+            pinMode(JOYSTICK_X_PIN, INPUT);
+            pinMode(M1A, OUTPUT);
+            pinMode(M1B, OUTPUT);
+        }
+
+
+        void loop(){
+            // Returns the vertical position of the joystick from a range of 0-1023
+            int joystick = analogRead(JOYSTICK_X_PIN);
+            
+            joystick -= 512;
+            
+            // Analog joysticks tend to have a constant measured offset from 512 (ideal centre value) at rest, 
+            // The deadzone acts as a filter on the offset, by making all values within the affected range 0.
+            if ( abs(joystick) < DEADZONE ) joyX = 0;
+            
+            // We map the joystick value from a signed 10 bit integer to a signed 9 bit integer to match the 8 bit PWM resolution.
+            setMotor(
+                M1A,
+                M1B,
+                map(joystick,-512,512,-255,255)
+            );
+        }
+        ```
     </TabItem>
     <TabItem label="ESP32">
         One easy option to drive motors with an ESP32 is to use LEDC to generate the required PWM signals. 
@@ -70,6 +123,8 @@ Consequently, when both `M1` pins are depowered, no motion occurs, and when both
 
         void setup(){
             pinMode(JOYSTICK_X_PIN, INPUT);
+            pinMode(M1A, OUTPUT);
+            pinMode(M1B, OUTPUT);
             ledcAttach(M1A, PWM_FREQ, PWM_RESOLUTION);
             ledcAttach(M1B, PWM_FREQ, PWM_RESOLUTION);
         }
@@ -172,6 +227,8 @@ Consequently, when both `M1` pins are depowered, no motion occurs, and when both
                 // Init mcpwm 
                 mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_conf);
                 mcpwm_init(MCPWM_UNIT_1, MCPWM_TIMER_0, &pwm_conf);
+
+                // No need to configure pinMode(pin,mode) as MCPWM configures the pins automatically.
         }
 
         
