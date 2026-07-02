@@ -9,9 +9,12 @@ export const collections = {
     schema: docsSchema({
       // Extend the default Starlight schema
       extend: z.object({
-        author: z.string().optional(),
-        lastEditor: z.string().optional(),
-        createdOn: z.date()
+        author: z.string(),
+        lastEditor: z.string(),
+        lastUpdated:z.any(),
+        createdOn: z.any(),
+        description: z.string(),
+        title:z.string()
       }),
     }),
   }),

@@ -7,7 +7,6 @@ export default defineConfig({
   integrations: [
       starlight({
           title: 'Mechmania Learn',
-          lastUpdated: true,
           social: [
               { icon: 'github', label: 'GitHub', href: 'https://github.com/Mech-Mania/learn' }
           ],
