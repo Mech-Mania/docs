@@ -1,0 +1,41 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+
+const { author, lastEditor, createdOn, lastUpdated, description } = Astro.locals.starlightRoute.entry.data;
+import {dateShortener} from "./dateshortener.ts";
+---
+
+<Default>
+    <slot />
+</Default>
+
+<div class="meta-data">
+    <div>
+        {description}
+    </div>
+    <div>
+        {author && <span> By {author}</span>}
+        {<span class="divi"> | </span>}
+        {createdOn && <span>{dateShortener(createdOn)}</span>}
+    </div>
+    <div>
+        {lastEditor && <span> Last edit by {lastEditor}</span>}
+        {<span class="divi"> | </span>}
+        {lastUpdated && <span>{dateShortener(lastUpdated)}</span>}
+    </div>    
+</div>
+
+<style>
+.meta-data {
+    margin-top: 0.5rem;
+    margin-bottom: -0.5rem;
+    font-size: 0.9em;
+    color: var(--sl-color-gray-3);
+    display: flex;
+    flex-direction:column;
+    gap: 0.5rem;
+}
+.divi {
+    color: var(--sl-color-gray-5);
+}
+</style>

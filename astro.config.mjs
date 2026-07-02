@@ -7,12 +7,16 @@ export default defineConfig({
   integrations: [
       starlight({
           title: 'Mechmania Learn',
+          lastUpdated: true,
           social: [
               { icon: 'github', label: 'GitHub', href: 'https://github.com/Mech-Mania/learn' }
           ],
           customCss: [
               './src/styles/global.css',
           ],
+            components: {
+            PageTitle: './src/components/pageTitle.astro',
+          },
           sidebar: [
               {
                   label: 'Getting Started',
