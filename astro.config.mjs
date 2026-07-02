@@ -25,16 +25,16 @@ export default defineConfig({
                   label: 'Lessons',
                   items: [
                       {
-                          label: "U1 design", 
-                          items: [{autogenerate: {directory: "lessons/u1-design"}}],
+                          label: "Design", 
+                          items: [{autogenerate: {directory: "lessons/design"}}],
                       },
                       {
-                          label: "U2 electrical",
-                          items: [{autogenerate: {directory: "lessons/u2-electrical"}}],
+                          label: "Electrical",
+                          items: [{autogenerate: {directory: "lessons/electrical"}}],
                       },
                       {
-                          label: "U3 programming",
-                          items: [{autogenerate: {directory: "lessons/u3-programming"}}],
+                          label: "Programming",
+                          items: [{autogenerate: {directory: "lessons/programming"}}],
                       },
                   ]
               },

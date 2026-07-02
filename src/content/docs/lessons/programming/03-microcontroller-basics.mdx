@@ -64,12 +64,12 @@ To write data to serial, we can use the two functions `Serial.print();` amd `Ser
 
 To actually read the serial data, you can open the serial monitor on the IDE by clicking this icon in the top right: 
 
-![Serial Monitor Icon](../../../../assets/lessons/u3-programming/03-01-serial-monitor-icon.png)
+![Serial Monitor Icon](../../../../assets/lessons/programming/03-01.png)
 
 From there, you will be able to see every message that is sent through Serial from the MCU. If you do not see anything, try and check your connection to the MCU.
 Be sure to set the baud rate to 9600, so that the messages get through.
 
-![Serial Monitor Icon](../../../../assets/lessons/u3-programming/03-02-serial-monitor.png).
+![Serial Monitor Icon](../../../../assets/lessons/programming/03-02.png).
 
 
 ### Input/Output
@@ -96,7 +96,7 @@ There does exist a third mode `INPUT_PULLUP`, which defaults a pin to have a HIG
 
 Digital reads and writes have exactly two modes for both input and output: HIGH (operating voltage of the MCU),  with a value of 1, or LOW (ground), with a value of 0.
 
-For example, consider the Blink program from [Lesson 3.2](/lessons/u3-programming/02-uploading-code);
+For example, consider the Blink program from [Lesson 3.2](/lessons/programming/02-uploading-code);
 
 ```c++
 
@@ -174,7 +174,7 @@ PWM works by switching the power supply to a component on and off extremely quic
 
 The most common measurement used to describe PWM signals is the *duty cycle*, which is the percentage of time that a signal is HIGH over any given period.
 
-![Duty Cycle](../../../../assets/lessons/u3-programming/03-03-duty-cycle.jpg)
+![Duty Cycle](../../../../assets/lessons/programming/03-03.jpg)
 
 #### Outputting PWM
 
