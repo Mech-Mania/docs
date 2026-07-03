@@ -1,6 +1,6 @@
 ---
-title: 1.2 Parts I
-description: Sketch basics, 3D tools basics
+title: 1.2 Sketches
+description: Sketch basics
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-07-02
@@ -11,53 +11,30 @@ lastUpdated: 2026-07-03
     If you are ever stuck reading this lesson, be sure to check the [Solidworks docs](https://help.solidworks.com/2025/english/SolidWorks/sldworks/r_welcome_sw_online_help.htm?id=0), as it has a lot of useful information.
 :::
 
-## Page Setup
-Upon opening Solidworks, the first thing you will see is a mostly empty screen with a toolbar on the top and on the right. To create a [Part](https://help.solidworks.com/2025/english/solidworks/sldworks/c_Overview_and_Editing_Parts_Folder.htm), we can look at the top left of the window and navigate through the menu to `File>New...` (Alternatively pressing `Ctrl-n`).
 
-![New Part Menu](../../../../assets/lessons/design/02-01.png)
-
-The window above will open up. For now we will select `Part`, then click `OK`. 
-
-Once inside a part, we will see a lot of new options show up.
-
-On the left is a new sidebar which is by default set to the [Feature Tree](https://help.solidworks.com/2025/english/solidworks/sldworks/c_featuremanager_design_tree.htm), which will show all of the features we add to our model as we go.
-
-![Feature Sidebar](../../../../assets/lessons/design/02-02.png)
-
-The main window is currently empty, however it is called the `Viewport`, and it is where we will be directly creating the 3D models. We can scroll in and out using the scroll wheel, we can rotate the model by holding `MMB (middle-mouse-button)` and moving the mouse, and we can pan the screen with `MMB-Ctrl` while moving the mouse (especially useful for Sketches).
-![Viewport](../../../../assets/lessons/design/02-03.png)
-
-The first thing to check for is the units of the document. In Mechmania, we use metric, but Solidworks often defaults to imperial. If we look up once again at the top toolbar, we can navigate to `Tools>Options>Document Properties>Units`.
-
-![Units](../../../../assets/lessons/design/02-04.png)
-
-We want to set our units to `MMGS`, or to millimetres, grams, and seconds. Once that is done, click `OK` at the bottom of the window.
-
-## Sketches
-
-Now that we have set the units, the first thing we want to do is create a [Sketch](https://help.solidworks.com/2025/english/SolidWorks/sldworks/c_sketching_top.htm?id=28). Sketches are planes on which we can create 2D shapes and contours, which can then be brought into 3D in a variety of ways. 
+In every part, the first thing we want to do is create a [Sketch](https://help.solidworks.com/2025/english/SolidWorks/sldworks/c_sketching_top.htm?id=28). Sketches are planes on which we can create 2D shapes and contours, which can then be brought into 3D in a variety of ways. They are the backbone of all designing in Soldiworks. 
 
 #### Creating sketches
 
 We can create one by navigating to the `Sketch` tab in the the top left, then clicking the `Sketch` option.
 
-![Sketch Tab](../../../../assets/lessons/design/02-05.png)
+![Sketch Tab](../../../../assets/lessons/design/02/01.png)
 
 Once clicked, we will see the three reference planes in our viewport window. Reference planes are infinite 2D objects used as a reference for sketches. In every new Part, there exists one for each standard axis, where the Top, Front, and Right planes are along the Y, X, and Z axes, respectively. The red (or blue) arrows in the middle represents the location of the *origin*, or where the coordinates of the part are equal to `(0,0,0)`. It is a fixed point, and the starting point for all parts.
 
-![Planes](../../../../assets/lessons/design/02-06.png)
+![Planes](../../../../assets/lessons/design/02/02.png)
 
 We can click on any one of the planes to put our sketch there, and then the view will pan so that the sketch appears in 2D. We will put our first sketch along the front plane, as is standard for most parts. If we accidentally pan off of this view, we can reset it with the command `Ctrl-Space`, which will allow us to re-align our orientation.
 
 Once we click this, we can now see that the sketch has appeared in our Feature Tree. 
 If you exit the sketch accidentally, click on the sketch feature in the Feature Tree, then click the `Edit Sketch` icon to re-enter it.
 
-![Feature Tree Addition](../../../../assets/lessons/design/02-07.png)
+![Feature Tree Addition](../../../../assets/lessons/design/02/03.png)
 
 #### Creating Sketch Features
 To draw on the sketch, we look back up to the top bar, where a number of sketch tools lay, each of which we can access by clicking on them.
 
-![Sketch elements](../../../../assets/lessons/design/02-08.png)
+![Sketch elements](../../../../assets/lessons/design/02/04.png)
 
 Here is a brief description of some of the most common sketch tools by name and location on the grid above. Many of the tools have variants, which can be accessed by clicking the dropdown arrows next to the general icons.
 
@@ -73,7 +50,7 @@ To fix this, we must add dimensions and relations to our sketches until our mode
 
 As an example, we can create and relation a `center rectangle` (In the drop down menu of the rectangle icon in the, 1st column and 2rd row in the tools image above).
 
-![Experimenting](../../../../assets/lessons/design/02-09.png)
+![Experimenting](../../../../assets/lessons/design/02/05.png)
 
 We can see that there exist on each line and point small green icons. These are some relations which are created by default when creating the center rectangle to provide the correct structure; they constrain the boundary lines, the diagonal lines, and the centre lines relative to each other to form a rectangle.
 
@@ -83,14 +60,14 @@ In general, to create a relation, we select every sketch element which is to sha
 
 In this case, we will select the origin and the centerpoint of the rectangle. After selecting, a menu will appear on the left with all of the available sketch relations we can choose.
 
-![Relations](../../../../assets/lessons/design/02-10.png)
+![Relations](../../../../assets/lessons/design/02/06.png)
 
 From here, the relation we pick is based on what we want its behaviour to be. 
 If we wanted to force the two points to be on the same vertical or horizontal line, we would pick either the `vertical` or `horizontal` relation, respectively. Since we want, however, to force the points to occupy the exact same space, we can pick `coincident`.
 
 To confirm our selection, we can click on the green checkmark icon in the top left of the panel.
 
-![Fixed rectangle](../../../../assets/lessons/design/02-11.png)
+![Fixed rectangle](../../../../assets/lessons/design/02/07.png)
 
 
 #### Inferencing
@@ -108,11 +85,11 @@ Relations provide structure, however they do not assign physical values which bi
 #### Adding dimensions
 To add dimensions we can use the `Smart Dimension tool`. 
 
-![Dimensions](../../../../assets/lessons/design/02-12.png)
+![Dimensions](../../../../assets/lessons/design/02/08.png)
 
 If we click on an individual line, the dimension will show up by default as the current stored length of the line. We can edit this to be as long or short as we wish. Once satisfied with the length, we can click the green checkmark to confirm. If we want to change the dimension later, we can simply double-click the dimension label, and then Solidworks will allow us to edit our dimension.
 
-![Adding dimensions](../../../../assets/lessons/design/02-13.png)
+![Adding dimensions](../../../../assets/lessons/design/02/09.png)
 
 To dimension distance or angle between two sketch entities, we can select two of them, and then dimension the distance/angle (whether it is distance or angle will determine on the sketch relations between the entities).
 
@@ -129,14 +106,14 @@ If a sketch is `Under Defined`, then the parts of it that remain mutable are col
 
 You can see the status of your sketch in the bottom right of your screen, where it should say either `Under Defined`, `Fully Defined`, or `No Solution Found`.
 
-![Adding dimensions](../../../../assets/lessons/design/02-14.png)
+![Adding dimensions](../../../../assets/lessons/design/02/10.png)
 
 ### Over defining sketches
 
 If you add too many relations/dimensions and the sketch becomes unsolvable by Solidworks, it will become `Over Defined`, and the status will show `No Solution Found`
 
 The colours of the lines will either be red or yellow, according to this legend:
-![Overdefinition Legend](../../../../assets/lessons/design/02-15.png)
+![Overdefinition Legend](../../../../assets/lessons/design/02/11.png)
 
 The simplest way to deal with overdefinition is to simply delete the offending relation or dimension and try to find another way to define your sketch.
 
@@ -149,4 +126,4 @@ Most sketches, however, require entities whose purpose is to provide structure t
 
 We can convert entities to `construction lines`, which appear dotted and will be ignored when creating contours, by clicking the `for construction` checkbox in the relations window.
 
-![For construction button](../../../../assets/lessons/design/02-16.png)
+![For construction button](../../../../assets/lessons/design/02/12.png)

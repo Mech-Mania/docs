@@ -24,7 +24,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 For the purposes of this lesson, we will assume we are working with a standard Mechmania motor and driver pair; a 12V 1.5A (stall) brushed DC motor, and an [MDD3A motor driver](https://download.kamami.pl/p578534-MDD3A%20Datasheet.pdf).
 
 
-![Motor driver](../../../../assets/lessons/programming/05-01.png)
+![Motor driver](../../../../assets/lessons/programming/05/01.png)
 
 Consider the pinout diagram above. On each driver, there are four channels, each labelled as `M1A/B` or `M2A/B`. We can drive two motors off of each driver, where each channel allows power flow through a motor lead. 
 
@@ -157,10 +157,10 @@ Consequently, when both `M1` pins are depowered, no motion occurs, and when both
         Thankfully, ESP32s have a separate built-in utility called [MCPWM](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/mcpwm.html), a dedicated hardware PWM unit for all types of motors, DC, BLDC, servo, and stepper alike. Most of the ESP32 units contain 2 MCPWM units, each with 3 PWM pairs (6 channels), totalling an additional 12 PWM channels, all dedicated to motor function.
         
         Total MCPWM module:
-        ![MCPWM Overview](../../../../assets/lessons/programming/05-02.png)
+        ![MCPWM Overview](../../../../assets/lessons/programming/05/02.png)
 
         Individual Unit:
-        ![MCPWM Unit](../../../../assets/lessons/programming/05-03.png)
+        ![MCPWM Unit](../../../../assets/lessons/programming/05/03.png)
         
         If we consider the above diagrams, it follows that to individually drive a single pwm channel, for example pwm0a, then we need to index the unit, operator, and lane, as well as assigning a timer (for our purposes driving brushed DC motors, each PWM pair *within a unit* must have a unique timer).
         

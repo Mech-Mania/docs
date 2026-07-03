@@ -6,7 +6,7 @@ sidebar:
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-04-23
-lastUpdated: 2026-07-02
+lastUpdated: 2026-07-03
 ---
 
 import { Steps, Card } from '@astrojs/starlight/components';
@@ -55,13 +55,13 @@ When modifying existing files, remember to update the last-edited sections.
 <Card title="Lessons">
 The format for naming lessons is `XX-kebab-case-name.mdx`, where the the first two characters represent the number ID of the lesson, and the rest is in kebab-case.
 
-For example, should you have a lesson named `1.15 - Example lesson`, then the final name would be `15-example-lesson.mdx`. The unit the lesson belongs to would be signified by the folder it is in.
+For example, should you have a lesson named `1.15 - Example lesson`, where unit 1 is named `examples`, then the final name would be `examples/15-example-lesson.mdx`. The unit the lesson belongs to would be signified by the folder it is in.
 
-More examples:
+More examples with unit 1 `grilling` and unit 2 `facts`:
 ```
-"1.2 - Kebab Roasting" -> "02-kebab-roasting.mdx"
-"4.9 - Burger Flipping" -> "09-burger-flipping.mdx"
-"2.22 - Factual Statements" -> "22-factual-statements.mdx"
+"1.2 - Kebab Roasting" -> "grilling/02-kebab-roasting.mdx"
+"1.9 - Burger Flipping" -> "grilling/09-burger-flipping.mdx"
+"2.22 - Factual Statements" -> "facts/22-factual-statements.mdx"
 
 ```
 </Card>
@@ -69,17 +69,19 @@ More examples:
 The format for guide names is `kebab-case-name`.
 </Card>
 <Card title="Images">
-Image files should be named with the format `XX-XX`, and the unique (within a lesson/guide) ID of the image.
+Image files should be named with the format `XX`, which is a 2 digit unique identifier.
 
 Image files should be stored within the `src/assets/` directory of the site.
 If a lesson or guide contains an image, that image should be stored within the `src/assets` directory, in the same subfolder as their corresponding lesson is to the `src/content/docs/` folder.
 
-For lesson images, put the 2 digits of the lesson number in the title. For guides, simply put them into a subfolder with the name of the guide underneath the `src/assets/guides/` folder.
+For lesson images, put the image underneath a folder named as the unique 2 digit identifier of it's containing lesson in the format `src/assets/lessons/<course>/<LessonID>/<ImageID>`. 
 
-For example, if there were 2 images in a lesson at `src/assets/content/docs/lessons/grilling/101-kebab-eating.mdx`, some image files could be:
+For guides, simply put them into a subfolder with the name of the guide underneath the `src/assets/guides/` folder.
+
+For example, if there were 2 images in a lesson at `src/assets/content/docs/lessons/grilling/01-kebab-eating.mdx`, some image files could be:
 ```
-src/assets/lessons/grilling/01-01.png
-src/assets/lessons/grilling/01-02.png
+src/assets/lessons/grilling/01/01.png
+src/assets/lessons/grilling/01/02.png
 ```
 </Card>
 
