@@ -95,7 +95,7 @@ To confirm our selection, we can click on the green checkmark icon in the top le
 
 #### Inferencing
 
-For some of the more commonly used relations, Soldiworks will sometimes "infer" relations based on features created in the viewport window, which save time from needing to go through the process above. For example, instead of forcing two points to be `coincident` through the method above, we can often simply click and drag the point to another point, where it will become coincident and create the relation.
+For some of the more commonly used relations, Soldiworks will sometimes "infer" relations based on the entities created in the viewport window, which save time from needing to go through the process above. For example, instead of forcing two points to be `coincident` through the method above, we can often simply click and drag the point to another point, where it will become coincident and create the relation.
 
 #### Destroying relations
 
@@ -103,4 +103,50 @@ We can delete relations either by clicking on a sketch object, and deleting the 
 
 ### Dimensions
 
-Relations provide structure, however they do not assign physical values which bind sketches to the real world.
+Relations provide structure, however they do not assign physical values which bind sketches to the real world. With dimensions we can assign length, distance, diametre and angle values to sketch entities.
+
+#### Adding dimensions
+To add dimensions we can use the `Smart Dimension tool`. 
+
+![Dimensions](../../../../assets/lessons/design/02-12.png)
+
+If we click on an individual line, the dimension will show up by default as the current stored length of the line. We can edit this to be as long or short as we wish. Once satisfied with the length, we can click the green checkmark to confirm. If we want to change the dimension later, we can simply double-click the dimension label, and then Solidworks will allow us to edit our dimension.
+
+![Adding dimensions](../../../../assets/lessons/design/02-13.png)
+
+To dimension distance or angle between two sketch entities, we can select two of them, and then dimension the distance/angle (whether it is distance or angle will determine on the sketch relations between the entities).
+
+#### Destroying dimensions
+
+We can destroy dimensions by right-clicking on the dimension icons, then clicking `delete`.
+
+
+### Sketch definition
+
+If a sketch is `Fully Defined`, that means it is completely constrained by relations and dimensions, every line should appear black and be unmovable when attempting to drag it around using the mouse. This is the ideal state of every sketch.
+
+If a sketch is `Under Defined`, then the parts of it that remain mutable are coloured blue, and can be moved around with the mouse. With few exceptions, sketches should not be left like this, as it can cause many problems down the road in your designs.
+
+You can see the status of your sketch in the bottom right of your screen, where it should say either `Under Defined`, `Fully Defined`, or `No Solution Found`.
+
+![Adding dimensions](../../../../assets/lessons/design/02-14.png)
+
+### Over defining sketches
+
+If you add too many relations/dimensions and the sketch becomes unsolvable by Solidworks, it will become `Over Defined`, and the status will show `No Solution Found`
+
+The colours of the lines will either be red or yellow, according to this legend:
+![Overdefinition Legend](../../../../assets/lessons/design/02-15.png)
+
+The simplest way to deal with overdefinition is to simply delete the offending relation or dimension and try to find another way to define your sketch.
+
+
+### Construction Entities
+
+By default, every sketch entity (lines, arcs, etc.) are solid lines, these lines group together to create the final composite shape, the `contour`, used for 3D operations. Contours are in general entirely closed; So there may not be a solid line in the sketch which does not form the boundary of a contour.
+
+Most sketches, however, require entities whose purpose is to provide structure to the actual contour which is to be extruded. Those lines create open contours, and will cause Soldiworks to throw errors upon transitioning to 3D.
+
+We can convert entities to `construction lines`, which appear dotted and will be ignored when creating contours, by clicking the `for construction` checkbox in the relations window.
+
+![For construction button](../../../../assets/lessons/design/02-16.png)
