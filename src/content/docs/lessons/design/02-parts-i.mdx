@@ -4,12 +4,14 @@ description: Sketch basics, 3D tools basics
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-07-02
-lastUpdated: 2026-07-02
+lastUpdated: 2026-07-03
 ---
 
 :::tip
     If you are ever stuck reading this lesson, be sure to check the [Solidworks docs](https://help.solidworks.com/2025/english/SolidWorks/sldworks/r_welcome_sw_online_help.htm?id=0), as it has a lot of useful information.
 :::
+
+## Page Setup
 Upon opening Solidworks, the first thing you will see is a mostly empty screen with a toolbar on the top and on the right. To create a [Part](https://help.solidworks.com/2025/english/solidworks/sldworks/c_Overview_and_Editing_Parts_Folder.htm), we can look at the top left of the window and navigate through the menu to `File>New...` (Alternatively pressing `Ctrl-n`).
 
 ![New Part Menu](../../../../assets/lessons/design/02-01.png)
@@ -31,24 +33,74 @@ The first thing to check for is the units of the document. In Mechmania, we use 
 
 We want to set our units to `MMGS`, or to millimetres, grams, and seconds. Once that is done, click `OK` at the bottom of the window.
 
+## Sketches
+
 Now that we have set the units, the first thing we want to do is create a [Sketch](https://help.solidworks.com/2025/english/SolidWorks/sldworks/c_sketching_top.htm?id=28). Sketches are planes on which we can create 2D shapes and contours, which can then be brought into 3D in a variety of ways. 
+
+#### Creating sketches
 
 We can create one by navigating to the `Sketch` tab in the the top left, then clicking the `Sketch` option.
 
 ![Sketch Tab](../../../../assets/lessons/design/02-05.png)
 
-Once clicked, we will see the three reference planes in our viewport window. Reference planes are infinite 2D objects used as a reference for sketches. In every new Part, there exists one for each standard axis, where the Top, Front, and Right planes are along the Y, X, and Z axes, respectively.
+Once clicked, we will see the three reference planes in our viewport window. Reference planes are infinite 2D objects used as a reference for sketches. In every new Part, there exists one for each standard axis, where the Top, Front, and Right planes are along the Y, X, and Z axes, respectively. The red (or blue) arrows in the middle represents the location of the *origin*, or where the coordinates of the part are equal to `(0,0,0)`. It is a fixed point, and the starting point for all parts.
 
 ![Planes](../../../../assets/lessons/design/02-06.png)
 
 We can click on any one of the planes to put our sketch there, and then the view will pan so that the sketch appears in 2D. We will put our first sketch along the front plane, as is standard for most parts. If we accidentally pan off of this view, we can reset it with the command `Ctrl-Space`, which will allow us to re-align our orientation.
 
 Once we click this, we can now see that the sketch has appeared in our Feature Tree. 
+If you exit the sketch accidentally, click on the sketch feature in the Feature Tree, then click the `Edit Sketch` icon to re-enter it.
 
 ![Feature Tree Addition](../../../../assets/lessons/design/02-07.png)
 
-
-To draw on the sketch, we look back up to the top bar, where a number of sketch elements lay.
+#### Creating Sketch Features
+To draw on the sketch, we look back up to the top bar, where a number of sketch tools lay, each of which we can access by clicking on them.
 
 ![Sketch elements](../../../../assets/lessons/design/02-08.png)
 
+Here is a brief description of some of the most common sketch tools by name and location on the grid above. Many of the tools have variants, which can be accessed by clicking the dropdown arrows next to the general icons.
+
+The best way to figure out what each of the sketch tools do and how they work is by experimenting yourself, however it is important to know that you can exit out of any operation simply by pressing the escape key, and that sketch lines can be deleted by selecting them, right clicking, then clicking `delete`.
+
+After making some shapes, it becomes clear that each shape we make, even if they are chained to each other, is able to be moved around and reformed freely, which is not ideal for making precise and dimensioned models.
+
+To fix this, we must add dimensions and relations to our sketches until our model is [fully defined](https://help.solidworks.com/2026/english/SolidWorks/sldworks/c_Fully_Defined_Sketches.htm?id=27.19.1.23). 
+
+### Relations
+
+[Sketch relations](https://my.solidworks.com/reader/onlinehelp/2021%252Fenglish%252Fsolidworks%252Fsldworks%252Fc_relations_top.htm/) are used to constrain the geometry of a sketch, and provide structure. Relations determine things like which lines, arcs, and points intersect, which ones are coincident, vertical, horizontal, colinear, and all manner of other geometrical features.
+
+As an example, we can create and relation a `center rectangle` (In the drop down menu of the rectangle icon in the, 1st column and 2rd row in the tools image above).
+
+![Experimenting](../../../../assets/lessons/design/02-09.png)
+
+We can see that there exist on each line and point small green icons. These are some relations which are created by default when creating the center rectangle to provide the correct structure; they constrain the boundary lines, the diagonal lines, and the centre lines relative to each other to form a rectangle.
+
+#### Creating relations
+
+In general, to create a relation, we select every sketch element which is to share the relation (using shift-click or drag-select to select multiple), then select the appropriate relation.
+
+In this case, we will select the origin and the centerpoint of the rectangle. After selecting, a menu will appear on the left with all of the available sketch relations we can choose.
+
+![Relations](../../../../assets/lessons/design/02-10.png)
+
+From here, the relation we pick is based on what we want its behaviour to be. 
+If we wanted to force the two points to be on the same vertical or horizontal line, we would pick either the `vertical` or `horizontal` relation, respectively. Since we want, however, to force the points to occupy the exact same space, we can pick `coincident`.
+
+To confirm our selection, we can click on the green checkmark icon in the top left of the panel.
+
+![Fixed rectangle](../../../../assets/lessons/design/02-11.png)
+
+
+#### Inferencing
+
+For some of the more commonly used relations, Soldiworks will sometimes "infer" relations based on features created in the viewport window, which save time from needing to go through the process above. For example, instead of forcing two points to be `coincident` through the method above, we can often simply click and drag the point to another point, where it will become coincident and create the relation.
+
+#### Destroying relations
+
+We can delete relations either by clicking on a sketch object, and deleting the desired relation from the `Existing Relations` tab on the left sidebar, or by right-clicking and deleting the small green icon representing it in the viewport.
+
+### Dimensions
+
+Relations provide structure, however they do not assign physical values which bind sketches to the real world.
