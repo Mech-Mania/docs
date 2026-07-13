@@ -1,0 +1,44 @@
+---
+title: 3.8 Wireless Connections 
+description: Using ESP-NOW, Radio, Bluetooth, WIFI 
+author: Camleaf
+lastEditor: Camleaf
+createdOn: 2026-07-12
+lastUpdated: 2026-07-13
+---
+
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+
+As of so far, to make any changes to the operation of motors, servos, or other components, we have had to re-flash the code to our microcontroller. For the purposes of driving a robot, especially in a competition format, this becomes infeasible extremely quickly. Instead, we can pass data to the microcontroller wirelessly through a variety of means.
+
+### Radio
+
+`Insert radio stuff here`
+
+Though both ESP32 and Arduino have similar methods of handling radio transmission with [RF24](https://nrf24.github.io/RF24/), their usage of other wireless connections diverge drastically; Arduino does not have native Wifi and Bluetooth support, and relies on external boards such as the ESP8266, wheareas the ESP32 has built-in support for bluetooth, as well as both regular and connectionless WIFI.
+
+<Tabs syncKey="Boards">
+<TabItem label="Arduino">
+:::danger
+This section is incomplete. If you would like to fill it out, please take a look at [contributing](/getting-started/contributing)!
+:::
+</TabItem>
+
+<TabItem label="ESP32">
+
+### Wifi
+
+
+
+
+### Bluetooth
+
+
+
+### ESP-NOW
+
+
+</TabItem>
+</Tabs>
