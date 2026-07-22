@@ -4,19 +4,16 @@ description: "Learn the fundamental electrical quantities: voltage, current, res
 author: Kush Suthar
 lastEditor: Kush Suthar
 createdOn: 2026-07-17
-lastUpdated: 2026-07-20
+lastUpdated: 2026-07-22
 ---
 
 import { Card } from '@astrojs/starlight/components';
 
 :::caution
-    Electrical systems can be dangerous if handled incorrectly. 
-    Always verify and be aware of voltage, polarity, and 
-    component ratings before connecting a circuit. 
+Electrical systems can be dangerous if handled incorrectly. Always verify and be aware of voltage, polarity, and component ratings before connecting a circuit.
 :::
 
-Before starting to design circuits or wiring robots, it is important to understand the basic measurements 
-used to describe electricity to know what you are working with.
+Before starting to design circuits or wiring robots, it is important to understand the basic measurements used to describe electricity to know what you are working with.
 
 The 3 basic measurements are:
 
@@ -30,7 +27,7 @@ We will dive into each of these measurements.
 
 Voltage is the electrical push or force that drives current through a circuit. It is measured in **Volts (V)**.
 
-It provides the push that drives current through a circuit.
+More precisely, voltage represents **electric potential difference**. It is a measurement of how much energy is required to move a unit of electric charge from one point to another in a circuit. 
 
 :::danger
 Feeding higher voltage into a component than it is rated for will **damage** the component.
@@ -38,23 +35,27 @@ Feeding higher voltage into a component than it is rated for will **damage** the
 
 ## Current
 
-Current is the rate at which electric charge flows through a circuit. It is measured in **Amperes or Amps (A)**.
-It measures how much electric charge flows through the circuit each second.
+Current is the rate at which electric charge flows through a circuit. It is measured in **Amperes or Amps (A)**. It measures how much electric charge flows through the circuit each second.
 
 :::note
-Components draw current based on their electrical load. Your battery/power supply must be able to safely supply the 
-current your system demands.
+Components draw current based on their electrical load. Your battery/power supply must be able to safely supply the current your system demands.
+
+For example: if a power supply is rated for **4A**, but your circuit only demands **2A**, the power supply will only output **2A**. However, your power supply must be capable of supplying at least the total current your circuit requires.
 :::
 
 ## Resistance
 
-Resistance opposes the flow of electric current through a circuit. It is measured in **Ohms (Ω)**.
-It restricts how much current can pass through the circuit. 
+Resistance opposes the flow of electric current through a circuit. It is measured in **Ohms (Ω)**. It restricts how much current can pass through the circuit.
+
+**Why Do We Use Resistance?**
+
+We intentionally add components called **resistors** to limit the amount of current passing through a circuit branch. Without resistance:
+- A component like an **LED** would draw too much current and instantly explode or burn out.
+- A circuit could short, creating dangerously high current that melts components or wiring.
 
 ## Ohm's Law
 
-Ohm's Law connects Voltage, Current, and Resistance into a single formula. 
-It is the most fundamental equation in electronics:
+Ohm's Law connects Voltage, Current, and Resistance into a single formula. It is the most fundamental equation in electronics:
 
 `V = I × R`
 
@@ -64,16 +65,21 @@ By rearranging this formula, you can calculate any missing value in your circuit
 - **Calculate Current:** `I = V / R`
 - **Calculate Resistance:** `R = V / I`
 
+### The Relationship Between V, I, and R
+
+Ohm's law shows how these three values directly influence each other:
+
+- **Direct Proportionality:** If **Resistance (R)** stays constant, increasing **Voltage (V)** will cause **Current (I)** to increase equally.
+- **Inverse Proportionality:** If **Voltage (V)** stays constant, **Current (I)** and **Resistance (R)** are inversely related. If resistance increases, current decreases, and vice versa.
+
 ## Example
 
-A motor is connected to a **12V battery** and has a resistance of **6Ω**.
+Suppose a motor rated for **12V** has an internal resistance of **6Ω**. We connect it to a **12V power supply**.
 
-Using Ohm's Law:
+Using Ohm's Law to find how much current the motor will draw:
 
-`I = V / R`
+`I = V / R`  
+`I = 12V / 6Ω`  
+`I = 2A`  
 
-`I = 12V / 6Ω`
-
-`I = 2A`
-
-The motor draws **2 Amps** of current.
+At its 12V rating, the motor will draw **2 Amps** of current to operate.
