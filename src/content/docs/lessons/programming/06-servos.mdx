@@ -4,11 +4,79 @@ description: Implementing Servos
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-06-28
-lastUpdated: 2026-06-28
+lastUpdated: 2026-07-25
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution
     It is recommended that you have read [2.8 Motors](/lessons/electrical/28-motors/) before starting this lesson.
 :::
 
+
+<Tabs syncKey="boards">
+<TabItem label="Arduino">
+
+To drive servos on an Arduino, in general we use the [`Servo.h`](https://docs.arduino.cc/libraries/servo/) library (by Michael Margolis, Arduino). 
+
+For more information see the library's [documentation](https://docs.arduino.cc/libraries/servo/#Methods).
+```c++
+#include <Servo.h>
+
+#define SERVO_PIN 13
+
+Servo srv;
+
+void setup(){
+    srv.attach(SERVO_PIN);
+}
+
+void loop(){
+    // Set the servo to 0 degrees
+    srv.write(0);
+    delay(1000);
+
+    // Set the servo to 180 degrees
+    srv.write(180);
+    delay(1000);
+}
+```
+
+
+
+</TabItem>
+<TabItem label="Esp32">
+
+To drive servos on an ESP32, in general we use the [`ESP32Servo.h`](https://docs.arduino.cc/libraries/esp32servo/) library (by Kevin Harrington,John K. Bennett). 
+The library is an ESP32 port of the Arduino [`Servo.h`](https://docs.arduino.cc/libraries/servo/)) library, and as such has the same syntax.
+
+For more information see the library's [documentation](https://github.com/madhephaestus/ESP32Servo#library-description).
+
+```c++
+#include <ESP32Servo.h>
+
+#define SERVO_PIN 13
+
+Servo srv;
+
+void setup(){
+    // Allocate timer for the servos
+    ESP32PWM::allocateTimer(0); // 
+
+    // Attach the servo object to the physical pin connected to the servo
+    srv.attach(SERVO_PIN);
+}
+
+void loop(){
+    // Set the servo to 0 degrees
+    srv.write(0);
+    delay(1000);
+
+    // Set the servo to 180 degrees
+    srv.write(180);
+    delay(1000);
+}
+```
+
+</TabItem>
+</Tabs>
