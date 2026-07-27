@@ -4,7 +4,7 @@ description: UDP, TCP
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-07-22
-lastUpdated: 2026-07-22
+lastUpdated: 2026-07-27
 ---
 
 
@@ -18,10 +18,13 @@ For the purposes of this lesson, we will only be going over the built-in WiFi on
 
 There are many different protocols involved with networking as a whole, however for our purposes, we will stick with UDP (User Datagram Protocol) and TCP (Transmission Control Protocol).
 
+## Wifi Setup
+<Tabs syncKey="boards" >
+<TabItem label="ESP32">
 
 To use WiFi on the ESP32, we use the [WiFi.h](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html) library.
 
-#### Client
+### Client
 ![ESP32 Wifi Client](../../../../assets/lessons/programming/09/02.png)
 
 If we wish to set up an ESP32 as a client to connect to a network, we must set it up as a `wifi station`, or `station mode`.
@@ -35,8 +38,11 @@ const char* password = "Password123"; // Leave empty for open network
 
 void setup(){
     Serial.begin(9600);
-
+    
+    // Connect to WiFi network
     WiFi.begin(SSID,PASSWORD);
+    
+    // Wait until WiFi is connected 
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
@@ -52,7 +58,7 @@ void loop(){};
 ```
 
 
-#### Server
+### Server
 
 ![ESP32 Wifi Server](../../../../assets/lessons/programming/09/01.png)
 
@@ -74,14 +80,122 @@ void setup(){
 
 void loop(){};
 ```
-I
+
 While an Esp32 is running the code above, you should be able to detect and connect to the WiFi network run by it.
 
-At the moment however, we are unable to send and recieve data
+</TabItem>
+<TabItem label="Desktop">
 
 
+</TabItem>
+</Tabs>
+
+## Data Transfer
+At the moment however, while we have a connection, we are unable to send and recieve data. The two simplest and most versatile tools to accomplish this are UDP and TCP.
+
+UDP is a connectionless system, so it will not retry lost packets, will not handshake to ensure its destination exists, and will not guarantee any specific packet order. It is generally used in applications where speed and low-latency applications (such as real-time controls), as it is faster to send and recieve, and faces much less risk of stalls than systems which require connections, as they can get stuck in a retry loop for relatively long periods of time before continuing to a new packet.
+
+TCP is the reverse. It requires a digital handshake before sending data, and requires confirmation that a packet has arrived before it will send a new one. On the recieving end, packets are also reconstructed in the order which they were sent. It is much slower and more vulnerable to stalls than UDP, but with it data transfer is reliable and has much lower packet loss.
+
+<Tabs syncKey="boards">
+<TabItem label="ESP32">
+
+#### UDP
+
+To read or write any UDP data from an ESP32, we use the `NetworkUDP.h` library from Espressif's [Network API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/network.html#networkudp).
+
+Using this library we can create a `NetworkUDP` object.
+
+```c++
+#include <NetworkUDP.h>
+NetworkUDP UDP;
+```
+
+##### Sending
+
+```c++ wrap
+#include <WiFi.h>
+#include <NetworkUDP.h>
+#include <cstdint>
+
+const int port = 8888; // Port which data is sent to
+
+const char destinationIP[] = "192.168.4.1"; // Either the access point IP of the connected server (if client), or the local IP of a connected client (if server)
+
+// Struct through which to package data. All objects in the must have a static memory size.
+// Must be the same struct as is being recieved.
+struct [[gnu::packed]] dataStruct {
+    char text[16];
+}
+
+dataStruct data;
+
+void setup(){
+    // ... Setup WiFi connection (either server or client)
+}
+
+void loop(){
+    
+    udp.beginPacket(destinationIP, port); // Begin the packet to a destination IP and port
+    udp.write((const uint8_t*)&data, sizeof(dataStruct)); // Write all the bytes of the container struct to the packet
+    udp.endPacket(); // Close and send the datagram to the destination
+    
+    delay(20); // 50hz message loop
+}   
+```
+
+##### Recieving
+
+To recieve data over UDP, we must first create a listener on the port each datagram is being sent to.
+
+```c++ wrap
+#include <WiFi.h>
+#include <NetworkUDP.h>
+#include <cstdint>
+
+const int port = 8888; // Port to listen on for data
+
+// Struct through which to package data. All objects in the must have a static memory size.
+// Must be the same struct as is being sent.
+struct [[gnu::packed]] dataStruct {
+    char text[16];
+}
+
+dataStruct data;
 
 
+void setup(){
+    // ... Setup WiFi connection (either server or client)
+    
+    udp.begin(port); // Listen on the port for datagrams
+}
+
+void loop(){
+    int packetSize = udp.parsePacket(); // Read packet
+    if (!packetSize) return; // If no packet, then return
+    
+
+    // If packet exists, then read sizeof(dataStruct) bytes into `data`
+    udp.read((uint8_t*)&data, sizeof(dataStruct));
+    
+    // Print recieved text
+    Serial.println(data.text); 
+
+    return true;
+}
+
+```
+
+#### TCP
+
+</TabItem>
+<TabItem label="Desktop">
+
+#### UDP
 
 
+#### TCP
 
+
+</TabItem>
+</Tabs>
