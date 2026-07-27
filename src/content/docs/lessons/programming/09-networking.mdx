@@ -21,8 +21,6 @@ For the purposes of this lesson, we will only be going over the built-in WiFi on
 There are many different protocols involved with networking as a whole, however for our purposes, we will stick with UDP (User Datagram Protocol) and TCP (Transmission Control Protocol).
 
 ## Wifi Setup
-<Tabs syncKey="boards" >
-<TabItem label="ESP32">
 
 To use WiFi on the ESP32, we use the [WiFi.h](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html) library.
 
@@ -87,12 +85,9 @@ void loop(){};
 
 While an ESP32 is running the code above, you should be able to detect and connect to the WiFi network run by it from any wifi-capable device.
 
-</TabItem>
-<TabItem label="Desktop">
-
-
-</TabItem>
-</Tabs>
+:::tip
+    While this lesson will go over transmitting data through WiFi on personal computers as well, it will not go over creating a local network through them. You can connect to an ESP32's local network through your personal computer as you would any WiFi network.
+:::
 
 ## Data Transfer
 At the moment however, while we have a connection, we are unable to send and recieve data. The two simplest and most versatile tools to accomplish this are UDP and TCP.
@@ -298,6 +293,8 @@ void loop(){
 
 </TabItem>
 <TabItem label="Desktop">
+
+We can also use our personal computers to act as a UDP/TCP client/server. While setting up a PC as a local network is rather complex, connecting to a network and using it as an medium to communicate through UDP/TCP is simpler.
 
 #### UDP
 
