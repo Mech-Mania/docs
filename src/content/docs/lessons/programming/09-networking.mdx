@@ -40,7 +40,7 @@ void setup(){
     Serial.begin(9600);
     
     // Connect to WiFi network
-    WiFi.begin(SSID,PASSWORD);
+    WiFi.begin(ssid,password);
     
     // Wait until WiFi is connected 
     while (WiFi.status() != WL_CONNECTED) {
@@ -71,7 +71,7 @@ const char* ssid = "Funky_Network_Name";
 const char* password = "Password123"; // Leave empty for open network
 
 void setup(){
-    WiFi.softAP(SSID,PASSWORD);
+    WiFi.softAP(ssid,password);
     
     // print out the IP address of the network
     Serial.print("Wifi IP address: ");
@@ -95,27 +95,35 @@ At the moment however, while we have a connection, we are unable to send and rec
 
 UDP is a connectionless system, so it will not retry lost packets, will not handshake to ensure its destination exists, and will not guarantee any specific packet order. It is generally used in applications where speed and low-latency applications (such as real-time controls), as it is faster to send and recieve, and faces much less risk of stalls than systems which require connections, as they can get stuck in a retry loop for relatively long periods of time before continuing to a new packet.
 
-TCP is the reverse. It requires a digital handshake before sending data, and requires confirmation that a packet has arrived before it will send a new one. On the recieving end, packets are also reconstructed in the order which they were sent. It is much slower and more vulnerable to stalls than UDP, but with it data transfer is reliable and has much lower packet loss.
+UDP sends data on a system of independent packets, where each is self-contained and has a fixed size.
+
+TCP is the reverse. It requires a digital handshake before sending data, and will retry lost bytes sent. On the recieving end, data is also reconstructed in the order which they were sent. It is much slower and more vulnerable to stalls than UDP, but with it data transfer is reliable and has much lower packet loss.
+
+TCP, since it has a constant connection, can send data into a stream, which is then consumed byte by byte by the reciever.
 
 <Tabs syncKey="boards">
 <TabItem label="ESP32">
 
-#### UDP
+To read or write any UDP or TCP data from an ESP32, we use the `Network.h` library from Espressif's [Network API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/network.html#networkudp).
 
-To read or write any UDP data from an ESP32, we use the `NetworkUDP.h` library from Espressif's [Network API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/network.html#networkudp).
+
+#### UDP
 
 Using this library we can create a `NetworkUDP` object.
 
 ```c++
-#include <NetworkUDP.h>
+#include <Network.h>
 NetworkUDP UDP;
 ```
 
+
 ##### Sending
+
+To send data over UDP, we must package our data, then send it over discrete Packets.
 
 ```c++ wrap
 #include <WiFi.h>
-#include <NetworkUDP.h>
+#include <Network.h>
 #include <cstdint>
 
 const int port = 8888; // Port which data is sent to
@@ -146,11 +154,11 @@ void loop(){
 
 ##### Recieving
 
-To recieve data over UDP, we must first create a listener on the port each datagram is being sent to.
+To recieve data over UDP, we must first create a listener on the port each datagram is being sent to. Since each packet is discrete, we can simply read a fixed amount of bytes from each packet to get the required data, in this case the size of the dataStruct.
 
 ```c++ wrap
 #include <WiFi.h>
-#include <NetworkUDP.h>
+#include <Network.h>
 #include <cstdint>
 
 const int port = 8888; // Port to listen on for data
@@ -180,13 +188,91 @@ void loop(){
     
     // Print recieved text
     Serial.println(data.text); 
-
-    return true;
 }
 
 ```
 
 #### TCP
+
+
+
+```c++
+#include <Network.h>
+
+const int port = 8888;
+
+NetworkServer TCPServer(port); // for reciever 
+NetworkClient TCPClient;
+```
+
+##### Sending
+
+```c++ wrap
+#include <WiFi.h>
+#include <NetworkUDP.h>
+#include <cstdint>
+
+const char* ssid = "Funky_Network_Name";
+const char* password = "Password123"; // Leave empty for open network
+
+void setup(){
+    Serial.begin(9600);
+    
+    // Connect to WiFi network
+    WiFi.begin(ssid,password);
+    
+    // Wait until WiFi is connected 
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+        
+    Serial.print("Connected!");
+    
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+}
+
+void loop(){
+    
+}   
+```
+
+##### Recieving
+
+To recieve data over UDP, we must first create a listener on the port each datagram is being sent to.
+
+```c++ wrap
+#include <WiFi.h>
+#include <Network.h>
+#include <cstdint>
+
+
+const char* ssid = "Funky_Network_Name";
+const char* password = "Password123"; // Leave empty for open network
+
+const int port = 8888;
+
+NetworkServer TCPServer(port); // for reciever 
+
+void setup(){
+    Serial.begin(9600);
+    // ... Setup server WiFi connection
+    WiFi.softAP(ssid,password);
+    
+    // print out the IP address of the network
+    Serial.print("Wifi IP address: ");
+    Serial.println(WiFi.softAPIP());
+    
+
+    TCPServer.begin(port);
+}
+
+void loop(){
+    
+}
+
+```
 
 </TabItem>
 <TabItem label="Desktop">
