@@ -85,10 +85,6 @@ void loop(){};
 
 While an ESP32 is running the code above, you should be able to detect and connect to the WiFi network run by it from any wifi-capable device.
 
-:::tip
-    While this lesson will go over transmitting data through WiFi on personal computers as well, it will not go over creating a local network through them. You can connect to an ESP32's local network through your personal computer as you would any WiFi network.
-:::
-
 ## Data Transfer
 At the moment however, while we have a connection, we are unable to send and recieve data. The two simplest and most versatile tools to accomplish this are UDP and TCP.
 
@@ -101,9 +97,6 @@ TCP is the reverse. It requires a digital handshake before sending data, and wil
 TCP, since it has a constant connection, can send data into a stream, which is then consumed byte by byte by the reciever.
 
 For both TCP and UDP, we can either connect a server directly to a client and send signals, or connect both to a router or a third device acting as a router and send signals through the third device as an intermediary. By extension this means that the status of a device as a TCP or UDP "sender" or "reciever" is independent from it's status as a WiFi "client" or "server".
-
-<Tabs syncKey="boards">
-<TabItem label="ESP32">
 
 To read or write any UDP or TCP data from an ESP32, we use the `Network.h` library from Espressif's [Network API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/network.html#networkudp).
 
@@ -134,7 +127,7 @@ const char destinationIP[] = "192.168.4.1"; // Either the access point IP of the
 // Must be the same struct as is being recieved.
 struct [[gnu::packed]] dataStruct {
     char text[16];
-}
+};
 
 dataStruct data;
 
@@ -167,7 +160,7 @@ const int port = 8888; // Port to listen on for data
 
 struct [[gnu::packed]] dataStruct {
     char text[16];
-}
+};
 
 dataStruct data;
 
@@ -219,7 +212,7 @@ To send data over a TCP connection, we first attempt to connect to the specified
 // Must be the same struct as is being sent.
 struct [[gnu::packed]] dataStruct {
     char text[16];
-}
+};
 dataStruct data;
 
 const int port = 8888; // Port which data is sent to
@@ -255,7 +248,7 @@ To recieve TCP data, we first check if there is a handshake request from a TCP c
 
 struct [[gnu::packed]] dataStruct {
     char text[16];
-}
+};
 dataStruct data;
 
 
@@ -290,17 +283,3 @@ void loop(){
 }
 
 ```
-
-</TabItem>
-<TabItem label="Desktop">
-
-We can also use our personal computers to act as a UDP/TCP client/server. While setting up a PC as a local network is rather complex, connecting to a network and using it as an medium to communicate through UDP/TCP is simpler.
-
-#### UDP
-
-
-#### TCP
-
-
-</TabItem>
-</Tabs>
