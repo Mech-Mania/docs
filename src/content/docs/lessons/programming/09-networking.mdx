@@ -12,6 +12,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 WiFi is everywhere, and our personal devices use it to communicate all of the time. We can use connect microcontrollers to modules to connect to WiFi networks, create them, and send signals along them. Often, for boards such as the ESP32, we do not even need any external modules, and can connect directly. 
 
+WiFi can be an excellent form of data transfer for robotics applications, and can allow us to create things such as wireless remotes for various objects, such as robots.
+
 :::caution
 For the purposes of this lesson, we will only be going over the built-in WiFi on the ESP32 chip. If you would like to change this, please [contribute](/getting-started/contributing)!
 :::
@@ -29,6 +31,8 @@ To use WiFi on the ESP32, we use the [WiFi.h](https://docs.espressif.com/project
 
 If we wish to set up an ESP32 as a client to connect to a network, we must set it up as a `wifi station`, or `station mode`.
 We must pass the name and password of the wifi network we wish to connect to to the init function.
+
+We can use this mode to connect to any WiFi network, even a regular home router.
 
 ```c++
 #include <Wifi.h>
@@ -73,15 +77,15 @@ const char* password = "Password123"; // Leave empty for open network
 void setup(){
     WiFi.softAP(ssid,password);
     
-    // print out the IP address of the network
-    Serial.print("Wifi IP address: ");
+    // print out the IP address of the device
+    Serial.print("IP address: ");
     Serial.println(WiFi.softAPIP());
 };
 
 void loop(){};
 ```
 
-While an Esp32 is running the code above, you should be able to detect and connect to the WiFi network run by it.
+While an ESP32 is running the code above, you should be able to detect and connect to the WiFi network run by it from any wifi-capable device.
 
 </TabItem>
 <TabItem label="Desktop">
@@ -101,6 +105,8 @@ TCP is the reverse. It requires a digital handshake before sending data, and wil
 
 TCP, since it has a constant connection, can send data into a stream, which is then consumed byte by byte by the reciever.
 
+For both TCP and UDP, we can either connect a server directly to a client and send signals, or connect both to a router or a third device acting as a router and send signals through the third device as an intermediary. By extension this means that the status of a device as a TCP or UDP "sender" or "reciever" is independent from it's status as a WiFi "client" or "server".
+
 <Tabs syncKey="boards">
 <TabItem label="ESP32">
 
@@ -116,10 +122,9 @@ Using this library we can create a `NetworkUDP` object.
 NetworkUDP UDP;
 ```
 
-
 ##### Sending
 
-To send data over UDP, we must package our data, then send it over discrete Packets.
+To send data over UDP, we must package our dat, then send it over discrete packets. For the example below, we package the data into a struct, then write each byte of the struct into a UDP packet, then send it to a specific port at a specific IP on the current WiFi network that the ESP32 is connected to.
 
 ```c++ wrap
 #include <WiFi.h>
@@ -139,22 +144,24 @@ struct [[gnu::packed]] dataStruct {
 dataStruct data;
 
 void setup(){
-    // ... Setup WiFi connection (either server or client)
+    // ... Setup WiFi connection here (either server or client)
 }
 
 void loop(){
-    
+    data.text = "Hello World! :)"; 
     udp.beginPacket(destinationIP, port); // Begin the packet to a destination IP and port
     udp.write((const uint8_t*)&data, sizeof(dataStruct)); // Write all the bytes of the container struct to the packet
     udp.endPacket(); // Close and send the datagram to the destination
     
-    delay(20); // 50hz message loop
+    delay(500); // 2hz message loop
 }   
 ```
 
 ##### Recieving
 
 To recieve data over UDP, we must first create a listener on the port each datagram is being sent to. Since each packet is discrete, we can simply read a fixed amount of bytes from each packet to get the required data, in this case the size of the dataStruct.
+
+The port on which the ESP32 is listening for UDP datagrams must be the same as the port which the sender is targeting.
 
 ```c++ wrap
 #include <WiFi.h>
@@ -171,7 +178,8 @@ dataStruct data;
 
 
 void setup(){
-    // ... Setup WiFi connection (either server or client)
+    Serial.begin(9600);
+    // ... Setup WiFi connection here (either server or client)
     
     udp.begin(port); // Listen on the port for datagrams
 }
@@ -205,6 +213,8 @@ NetworkClient TCPClient;
 
 ##### Sending
 
+To send data over a TCP connection, we first attempt to connect to the specified server. If the connection succeeds, we stream our data bytes through the connection. Once all bytes are streamed, we close the connection.
+
 ```c++ wrap
 #include <WiFi.h>
 #include <NetworkUDP.h>
@@ -219,27 +229,12 @@ dataStruct data;
 
 const int port = 8888; // Port which data is sent to
 const char destinationIP[] = "192.168.4.1"; // IP of the recieving server
-const char* ssid = "Funky_Network_Name";
-const char* password = "Password123"; // Leave empty for open network
 
 NetworkClient TCPClient;
 
 void setup(){
-    Serial.begin(9600);
-    
-    // Connect to WiFi network
-    WiFi.begin(ssid,password);
-    
-    // Wait until WiFi is connected 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-        
-    Serial.print("Connected!");
-    
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    // ... Setup WiFi connection here (either server or client) ...
+    data.text = "Hello World! :)";
 }
 
 void loop(){
@@ -250,11 +245,13 @@ void loop(){
         // End transmission
         client.stop();
     }
+    delay(500); // 2hz message loop
 }   
 ```
 
 ##### Recieving
 
+To recieve TCP data, we first check if there is a handshake request from a TCP client. If there is, we accept it and open a connection. Then, we read each byte through the connection stream as it arrives into our data buffers.
 
 ```c++ wrap
 #include <WiFi.h>
@@ -266,30 +263,22 @@ struct [[gnu::packed]] dataStruct {
 }
 dataStruct data;
 
-const char* ssid = "Funky_Network_Name";
-const char* password = "Password123"; // Leave empty for open network
 
 const int port = 8888;
 
 NetworkServer TCPServer(port); // for reciever 
 
-void setup(){
-    Serial.begin(9600);
+void setup(){ 
+    Serial.begin(9600); 
     
-    // Setup WiFI server
-
-    WiFi.softAP(ssid,password);
-    
-    // print out the IP address of the network
-    Serial.print("Wifi IP address: ");
-    Serial.println(WiFi.softAPIP());
+    // ... Setup WiFi connection here (either server or client) ...
     
     // Begin the TCP server
     TCPServer.begin(port);
 }
 
 void loop(){
-    NetworkClient client = server.accept();
+    NetworkClient client = server.accept(); // Check if a client is requesting a connection to the server.
     if (client) {
         while (client.connected()) {
             // Wait until bytes available in stream are equal to the number of bytes expected, which is the number of bytes in the container struct.
