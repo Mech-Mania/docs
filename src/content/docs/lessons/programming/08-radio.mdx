@@ -1,0 +1,32 @@
+---
+title: 3.8 Radio 
+description: ESP-NOW, NRF24 
+author: Camleaf
+lastEditor: Camleaf
+createdOn: 2026-07-22
+lastUpdated: 2026-07-22
+---
+
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+So far we have been operating our microcontrollers independently, with no way to share data with another. We can accomplish this a number of ways, however for this lesson, we will use radio, a method among the simplest ways to accomplish wireless data transfer. For our purposes, we will look primarily at using the [NRF24](https://nrf24.github.io/RF24/) protocol, and the [ESP-NOW](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/espnow.html) protocol.
+
+### NRF24
+
+We can use the NRF24 protocl on both ESP32 and Arduino boards, however, we need a NRF24L01 module.
+
+
+
+
+### ESP-NOW
+:::caution
+ESP-NOW will only work between multiple ESP32 boards, and not any other chips.
+:::
+
+According to the ESP-NOW documentation,
+`ESP-NOW is a communication protocol designed for low-power, low-latency, and high-throughput communication between ESP32 devices without the need for an access point (AP)`.
+
+It is 
+
+

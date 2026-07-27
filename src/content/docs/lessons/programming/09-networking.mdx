@@ -1,0 +1,87 @@
+---
+title: 3.9 Networking 
+description: UDP, TCP
+author: Camleaf
+lastEditor: Camleaf
+createdOn: 2026-07-22
+lastUpdated: 2026-07-22
+---
+
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+WiFi is everywhere, and our personal devices use it to communicate all of the time. We can use connect microcontrollers to modules to connect to WiFi networks, create them, and send signals along them. Often, for boards such as the ESP32, we do not even need any external modules, and can connect directly. 
+
+:::caution
+For the purposes of this lesson, we will only be going over the built-in WiFi on the ESP32 chip. If you would like to change this, please [contribute](/getting-started/contributing)!
+:::
+
+There are many different protocols involved with networking as a whole, however for our purposes, we will stick with UDP (User Datagram Protocol) and TCP (Transmission Control Protocol).
+
+
+To use WiFi on the ESP32, we use the [WiFi.h](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html) library.
+
+#### Client
+![ESP32 Wifi Client](../../../../assets/lessons/programming/09/02.png)
+
+If we wish to set up an ESP32 as a client to connect to a network, we must set it up as a `wifi station`, or `station mode`.
+We must pass the name and password of the wifi network we wish to connect to to the init function.
+
+```c++
+#include <Wifi.h>
+
+const char* ssid = "Funky_Network_Name";
+const char* password = "Password123"; // Leave empty for open network
+
+void setup(){
+    Serial.begin(9600);
+
+    WiFi.begin(SSID,PASSWORD);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+        
+    Serial.print("Connected!");
+    
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+};
+
+void loop(){};
+```
+
+
+#### Server
+
+![ESP32 Wifi Server](../../../../assets/lessons/programming/09/01.png)
+
+If we wish to set up the ESP32 as a WiFi server, wherein other devices connect to it (as in the diagram above), we must set the WiFi name, password, and then set it up as an `access point` or, `soft AP mode`.
+
+```c++
+#include <Wifi.h>
+
+const char* ssid = "Funky_Network_Name";
+const char* password = "Password123"; // Leave empty for open network
+
+void setup(){
+    WiFi.softAP(SSID,PASSWORD);
+    
+    // print out the IP address of the network
+    Serial.print("Wifi IP address: ");
+    Serial.println(WiFi.softAPIP());
+};
+
+void loop(){};
+```
+I
+While an Esp32 is running the code above, you should be able to detect and connect to the WiFi network run by it.
+
+At the moment however, we are unable to send and recieve data
+
+
+
+
+
+
+
