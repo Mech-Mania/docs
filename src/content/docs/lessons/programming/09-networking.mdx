@@ -4,18 +4,22 @@ description: UDP, TCP
 author: Camleaf
 lastEditor: Camleaf
 createdOn: 2026-07-22
-lastUpdated: 2026-07-27
+lastUpdated: 2026-07-28
 ---
 
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+:::tip
+This lesson is missing information about UDP and TCP connections through standard OSes such as Linux and Windows. If you would like to fill it in, please [contribute](/getting-started/contributing)!.  
+:::
 
 WiFi is everywhere, and our personal devices use it to communicate all of the time. We can use connect microcontrollers to modules to connect to WiFi networks, create them, and send signals along them. Often, for boards such as the ESP32, we do not even need any external modules, and can connect directly. 
 
 WiFi can be an excellent form of data transfer for robotics applications, and can allow us to create things such as wireless remotes for various objects, such as robots.
 
 :::caution
-For the purposes of this lesson, we will only be going over the built-in WiFi on the ESP32 chip. If you would like to change this, please [contribute](/getting-started/contributing)!
+For the purposes of this lesson, we will only be going over the built-in WiFi on the ESP32 series of chips. If you would like to add more, please [contribute](/getting-started/contributing)!
 :::
 
 There are many different protocols involved with networking as a whole, however for our purposes, we will stick with UDP (User Datagram Protocol) and TCP (Transmission Control Protocol).
@@ -101,7 +105,7 @@ For both TCP and UDP, we can either connect a server directly to a client and se
 To read or write any UDP or TCP data from an ESP32, we use the `Network.h` library from Espressif's [Network API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/network.html#networkudp).
 
 
-#### UDP
+### UDP
 
 Using this library we can create a `NetworkUDP` object.
 
@@ -110,14 +114,17 @@ Using this library we can create a `NetworkUDP` object.
 NetworkUDP UDP;
 ```
 
-##### Sending
+#### Sending
 
 To send data over UDP, we must package our dat, then send it over discrete packets. For the example below, we package the data into a struct, then write each byte of the struct into a UDP packet, then send it to a specific port at a specific IP on the current WiFi network that the ESP32 is connected to.
 
+See the below example where we read, package, then send an analog signal from a joystick:
 ```c++ wrap
 #include <WiFi.h>
 #include <Network.h>
 #include <cstdint>
+
+#define JOYSTICK_PIN 12;
 
 const int port = 8888; // Port which data is sent to
 
@@ -126,17 +133,18 @@ const char destinationIP[] = "192.168.4.1"; // Either the access point IP of the
 // Struct through which to package data. All objects in the must have a static memory size.
 // Must be the same struct as is being recieved.
 struct [[gnu::packed]] dataStruct {
-    char text[16];
+    int joystick;
 };
 
 dataStruct data;
 
 void setup(){
     // ... Setup WiFi connection here (either server or client)
+    pinMode(JOYSTICK_PIN,INPUT); // Configure joystick pin
 }
 
 void loop(){
-    data.text = "Hello World! :)"; 
+    data.joystick = analogRead(JOYSTICK_PIN); // Get joystick value
     udp.beginPacket(destinationIP, port); // Begin the packet to a destination IP and port
     udp.write((const uint8_t*)&data, sizeof(dataStruct)); // Write all the bytes of the container struct to the packet
     udp.endPacket(); // Close and send the datagram to the destination
@@ -145,7 +153,7 @@ void loop(){
 }   
 ```
 
-##### Recieving
+#### Recieving
 
 To recieve data over UDP, we must first create a listener on the port each datagram is being sent to. Since each packet is discrete, we can simply read a fixed amount of bytes from each packet to get the required data, in this case the size of the dataStruct.
 
@@ -159,7 +167,7 @@ The port on which the ESP32 is listening for UDP datagrams must be the same as t
 const int port = 8888; // Port to listen on for data
 
 struct [[gnu::packed]] dataStruct {
-    char text[16];
+    int joystick;
 };
 
 dataStruct data;
@@ -180,13 +188,15 @@ void loop(){
     // If packet exists, then read sizeof(dataStruct) bytes into `data`
     udp.read((uint8_t*)&data, sizeof(dataStruct));
     
-    // Print recieved text
-    Serial.println(data.text); 
+    // Print recieved text 
+    Serial.print("Joystick value: ")
+    Serial.println(data.joystick);
+
 }
 
 ```
 
-#### TCP
+### TCP
 
 To read and write TCP data, we use the `NetworkServer` and `NetworkClient` classes from the above `Network.h` library. 
 
@@ -199,7 +209,7 @@ NetworkServer TCPServer(port); // for reciever
 NetworkClient TCPClient;
 ```
 
-##### Sending
+#### Sending
 
 To send data over a TCP connection, we first attempt to connect to the specified server. If the connection succeeds, we stream our data bytes through the connection. Once all bytes are streamed, we close the connection.
 
@@ -208,10 +218,12 @@ To send data over a TCP connection, we first attempt to connect to the specified
 #include <NetworkUDP.h>
 #include <cstdint>
 
+#define JOYSTICK_PIN 12
+
 // Struct through which to package data. All objects in the must have a static memory size.
 // Must be the same struct as is being sent.
 struct [[gnu::packed]] dataStruct {
-    char text[16];
+    int joystick;
 };
 dataStruct data;
 
@@ -222,11 +234,14 @@ NetworkClient TCPClient;
 
 void setup(){
     // ... Setup WiFi connection here (either server or client) ...
-    data.text = "Hello World! :)";
+    pinMode(JOYSTICK_PIN, INPUT);
 }
 
 void loop(){
+    
     if (client.connect(destinationIP, port)) {
+        
+        data.joystick = analogRead(JOYSTICK_PIN); // Get joystick value
         // Write data to stream
         client.write((const uint8_t*)&data, sizeof(dataStuct));
         
@@ -237,7 +252,7 @@ void loop(){
 }   
 ```
 
-##### Recieving
+#### Recieving
 
 To recieve TCP data, we first check if there is a handshake request from a TCP client. If there is, we accept it and open a connection. Then, we read each byte through the connection stream as it arrives into our data buffers.
 
@@ -247,7 +262,7 @@ To recieve TCP data, we first check if there is a handshake request from a TCP c
 #include <cstdint>
 
 struct [[gnu::packed]] dataStruct {
-    char text[16];
+    int joystick;
 };
 dataStruct data;
 
@@ -275,7 +290,8 @@ void loop(){
                 // Read TCP transmission bytes
                 client.read((uint8_t*)&data, sizeof(dataStruct));
                 
-                Serial.println(data.text);
+                Serial.print("Joystick value: ")
+                Serial.println(data.joystick);
             }
         }
         client.stop();
