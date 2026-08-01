@@ -6,9 +6,47 @@ lastEditor: Camleaf
 createdOn: 2026-07-25
 lastUpdated: 2026-07-25
 ---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution
     It is recommended that you have read [2.8 Motors](/lessons/electrical/28-motors/) before starting this lesson.
 :::
 
+Stepper motors are motors which move in precise movements called `steps`, allowing for fined-grained movement, and allowing us to know how far the stepper is rotated at any given time. They work 
 
+There are two types of stepper motors: `Bipolar` and `Unipolar`. 
+
+
+
+
+Most steppers are defined as having `<x> Steps per Revolution`. This means that the stepper can control its up to an accuracy `360 / <x> degrees`
+
+To drive both unipolar and bipolar steppers on the ESP32 and Arduino, we use the [`Stepper`](https://docs.arduino.cc/libraries/stepper/) library. 
+
+```c++
+#include <Stepper.h>
+
+#define STEPS 200
+
+// pass the pins connected to the motor, first two are the first stepper pair, second two are the second pair
+Stepper stp(STEPS, 8, 9, 10, 11);
+
+void setup() {
+  Serial.begin(9600);
+
+  // set the speed of the stepper to 50 rpm
+  stp.setSpeed(50);
+}
+
+void loop() {
+    // step half a revolution in one direction
+    stp.step(STEPS/2);
+    delay(500);
+
+    
+
+    // step another half a revolution back
+    stp.step(-STEPS);
+    delay(500);
+}
+```
