@@ -1,0 +1,63 @@
+---
+title: 2.5 Microcontrollers
+description: "Understand what microcontrollers are, compare popular types, and learn safety and usage best practices."
+author: Kush Suthar
+lastEditor: Kush Suthar
+createdOn: 2026-07-25
+lastUpdated: 2026-07-25
+---
+
+import { Card } from '@astrojs/starlight/components';
+import { Image } from "astro:assets";
+
+import buckConverter from '../../../../assets/lessons/electrical/05/01.png';
+
+## Introduction
+
+The first thing we will learn in this lesson is **what is a microcontroller (MCU)**?
+
+In simple words, a microcontroller is a small, self-contained computer built on a single microchip that is built to do one specific job. 
+
+It is very different compared to a desktop computer.
+
+The core components of a microcontroller are:
+
+| Component | What it does |
+| :--- | :--- |
+| **CPU** | The "brain" that runs your code and handles math. |
+| **Flash Memory** | Permanent storage where your program code lives. |
+| **RAM** | Temporary memory for holding active variables. |
+| **GPIO Pins** | General Purpose Input/Output pins that communicate with hardware. |
+
+## Popular Microcontrollers
+
+There are many different types of MCU's with many different purposes.
+
+However, the most popular, and beginner-friendly MCU's are the following:
+
+- Arduino Uno/Nano/Mega*
+- ESP32*
+- Raspberry Pi/Pico
+
+*Permitted in MechMania
+
+## Safety and Logic Levels
+
+It is important to understand that MCU's communicate using specific electrical voltages representing digital logic (0s and 1s). Older MCU's like the Arduino Uno operate on 5V logic, while newer MCU's like the ESP32 use 3.3V. 
+
+Understanding this difference is **critical to keeping your hardware alive**. 
+
+:::caution
+Never hook a 5V component to a 3.3V MCU pin. Doing this will **destroy** the MCU.
+
+The reason for this is because if you connect a higher voltage than the MCU can handle, the excess voltage will be converted to **excess heat and fry the MCU**.
+:::
+
+#### Solution
+
+The solution for this is to use something as a **voltage divider** (ex. HW-316e Buck/Boost converter). What a voltage divider is step down the voltage into a lower, more feasible amount that the lower-voltage component can handle.
+
+![Buck Converter](../../../../assets/lessons/electrical/05/01.png)
+
+## GPIO Pin Limits
+
