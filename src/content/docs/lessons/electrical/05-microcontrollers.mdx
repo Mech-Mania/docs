@@ -4,7 +4,7 @@ description: "Understand what microcontrollers are, compare popular types, and l
 author: Kush Suthar
 lastEditor: Kush Suthar
 createdOn: 2026-07-25
-lastUpdated: 2026-07-25
+lastUpdated: 2026-08-13
 ---
 
 import { Card } from '@astrojs/starlight/components';
@@ -37,7 +37,7 @@ However, the most popular, and beginner-friendly MCU's are the following:
 
 - Arduino Uno/Nano/Mega*
 - ESP32*
-- Raspberry Pi/Pico
+- Raspberry Pi Pico
 
 *Permitted in MechMania
 
@@ -55,9 +55,18 @@ The reason for this is because if you connect a higher voltage than the MCU can 
 
 #### Solution
 
-The solution for this is to use something as a **voltage divider** (ex. HW-316e Buck/Boost converter). What a voltage divider is step down the voltage into a lower, more feasible amount that the lower-voltage component can handle.
+To step down power voltages safely (ex. turning 12V into 5V), use a **Buck Converter**. If you are just trying to convert 5V data signals to 3.3V data signals so sensors can talk to your MCU, use a **Logic Level Shifter** or a **Voltage Divider**.
 
 ![Buck Converter](../../../../assets/lessons/electrical/05/01.png)
 
 ## GPIO Pin Limits
 
+General Purpose Input/Output (GPIO) pins are designed to transmit **signals**, not raw power. If you plug something heavy to it, it can burn out the pin.
+
+Every microcontroller's GPIO pins have a limit, they vary from microcontroller to microcontroller. It is important that you look into your specific MCU's datasheet to find this information.
+
+It is also important to look into the datasheet to see what pins have what functions. 
+
+:::note
+Please make sure to **know the limits of your MCU's GPIO pins** before wiring anything. I have linked the datasheets for the [**ESP32-S3**](https://documentation.espressif.com/esp32-s3_datasheet_en.pdf) and [**Arduino UNO R3**](https://docs.arduino.cc/hardware/uno-rev3/) (which are usable in MechMania) for you to refer to. 
+:::
